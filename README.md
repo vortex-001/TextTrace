@@ -28,12 +28,13 @@
 
 ## 📸 Application Interface (Live UI)
 
-![TextTrace Document Comparison Workspace](docs/screenshots/texttrace_ui_main.png)
-*TextTrace Live Application: Side-by-side Document A & Document B workspace with word counters, custom phrase length k presets, and algorithmic comparison controls.*
+### ☀️ Light Theme (Warm Cream)
+![TextTrace Light Theme](docs/screenshots/texttrace_light_theme.png)
+*TextTrace Live Application in Light Theme: Featuring side-by-side document workspace, phrase length k presets, animated Sun/Moon toggle, and interactive Algorithm Visualizer.*
 
-| Algorithmic Similarity Results | Interactive Algorithm Visualizer |
-|:---:|:---:|
-| ![Results](docs/screenshots/analysis_results.png) | *Live animated Rabin-Karp sliding window, Merge Sort divide-and-conquer tree, & asymptotic analysis table* |
+### 🌙 Dark Theme (Obsidian)
+![TextTrace Dark Theme](docs/screenshots/texttrace_dark_theme.png)
+*TextTrace Live Application in Dark Theme: Featuring obsidian canvas, elevated dark cards, crimson accents, and real-time algorithmic telemetry.*
 
 ---
 
