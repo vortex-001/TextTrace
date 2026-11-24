@@ -26,15 +26,14 @@
 
 ---
 
-## 📸 Screenshots & UI Showcase
+## 📸 Application Interface (Live UI)
 
-| Document Comparison Workspace | Algorithmic Similarity Results |
-|:---:|:---:|
-| ![Workspace](docs/screenshots/comparison_workspace.png) | ![Results](docs/screenshots/analysis_results.png) |
+![TextTrace Document Comparison Workspace](docs/screenshots/texttrace_ui_main.png)
+*TextTrace Live Application: Side-by-side Document A & Document B workspace with word counters, custom phrase length k presets, and algorithmic comparison controls.*
 
-| Landing Overview & Architecture | Interactive Algorithm Visualizer |
+| Algorithmic Similarity Results | Interactive Algorithm Visualizer |
 |:---:|:---:|
-| ![Landing](docs/screenshots/landing_overview.png) | *Live animated Rabin-Karp window, Merge Sort tree, & asymptotic table* |
+| ![Results](docs/screenshots/analysis_results.png) | *Live animated Rabin-Karp sliding window, Merge Sort divide-and-conquer tree, & asymptotic analysis table* |
 
 ---
 
