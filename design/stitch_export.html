@@ -1,0 +1,567 @@
+<!DOCTYPE html><html class="light" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>TextTrace — Document Similarity Checker</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "outline": "#6c7a71", "primary": "#006c49", "tertiary": "#006c4c", "on-secondary-fixed-variant": "#37485d", "on-surface": "#0f1c2b", "secondary": "#4f6075", "on-primary-container": "#00422b", "surface-variant": "#d6e4f8", "surface-container-lowest": "#ffffff", "on-tertiary-container": "#00422d", "on-error": "#ffffff", "on-primary-fixed": "#002113", "surface-container-highest": "#d6e4f8", "primary-fixed-dim": "#4edea3", "on-primary": "#ffffff", "primary-fixed": "#6ffbbe", "outline-variant": "#bbcabf", "inverse-on-surface": "#eaf1ff", "on-primary-fixed-variant": "#005236", "surface-tint": "#006c49", "on-tertiary-fixed-variant": "#005139", "secondary-container": "#d2e4fe", "on-tertiary": "#ffffff", "surface-container": "#e5efff", "on-secondary-container": "#55667c", "on-secondary": "#ffffff", "error-container": "#ffdad6", "on-error-container": "#93000a", "background": "#f8f9ff", "secondary-fixed": "#d2e4fe", "error": "#ba1a1a", "surface": "#f8f9ff", "inverse-primary": "#4edea3", "tertiary-fixed": "#94f6ca", "surface-container-high": "#dce9fe", "on-secondary-fixed": "#0a1d2f", "secondary-fixed-dim": "#b6c8e1", "surface-dim": "#cedbef", "surface-container-low": "#eef4ff", "on-background": "#0f1c2b", "surface-bright": "#f8f9ff", "tertiary-container": "#52b48c", "on-tertiary-fixed": "#002115", "on-surface-variant": "#3c4a42", "tertiary-fixed-dim": "#78d9af", "inverse-surface": "#253141", "primary-container": "#10b981" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-lg": "1.5rem", "gutter": "1.25rem", "space-md": "1rem", "space-xl": "2.25rem", "margin-mobile": "1rem", "space-xs": "0.25rem", "margin": "2rem", "space-sm": "0.5rem", "gutter-mobile": "0.75rem" }, "fontFamily": { "body-md": ["Inter"], "code-inline": ["JetBrains Mono"], "headline-sm": ["Inter"], "body-sm": ["Inter"], "label-sm": ["JetBrains Mono"], "headline-md": ["Inter"], "body-lg": ["Inter"], "headline-xl": ["Inter"], "label-md": ["JetBrains Mono"], "headline-lg": ["Inter"], "headline-xl-mobile": ["Inter"] }, "fontSize": { "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "code-inline": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "label-sm": ["11px", { "lineHeight": "16px", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "headline-xl": ["32px", { "lineHeight": "40px", "fontWeight": "700" }], "label-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "headline-xl-mobile": ["26px", { "lineHeight": "34px", "fontWeight": "700" }] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-inverse-surface border-b border-outline-variant/20"><div class="max-w-7xl mx-auto px-margin-mobile md:px-margin h-16 flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md"><a class="flex items-center gap-space-sm" data-path="home" href="#"><img alt="TextTrace Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeO_h5ZBZqC5CoCso_x6wtgZ-20wao31kKxkYPMPo-bBFEiKy01LJboiK99ps3YiJM1MuHp8I-RHXvGXyJNm9KGe-pG1vedq7CaSdfHNM5n4YD0fiIe2Cj_bSxBkIPnhr1M6565_Og5LlEAQ20y5kXWH7Wr-E2Gr5AuP8HKaCXYWmlZC1ubdZirWd64yujt8SHV4kWzxVopTkZtqyjIas0S3kVIct_RWvU3WD73mdRgOUJjhmqiSGT"><span class="font-headline-sm text-headline-sm text-inverse-on-surface font-bold tracking-tight">TextTrace</span></a><span class="hidden lg:inline-flex items-center px-space-xs py-0.5 rounded-lg bg-surface-variant/20 border border-outline-variant/30 text-inverse-on-surface font-label-sm text-label-sm">DSA Project · RBU</span></div><nav class="hidden md:flex items-center gap-space-xs" data-active-classes="bg-surface-variant/20 text-inverse-on-surface font-headline-sm"><a class="px-space-sm py-1.5 rounded-lg font-body-sm text-body-sm text-surface-variant hover:text-inverse-on-surface hover:bg-surface-variant/10 transition-colors" data-path="home" href="#">Home</a><a aria-current="page" class="px-space-sm py-1.5 rounded-lg transition-colors bg-surface-variant/20 text-inverse-on-surface font-headline-sm" data-path="compare" href="#">Compare</a><a class="px-space-sm py-1.5 rounded-lg font-body-sm text-body-sm text-surface-variant hover:text-inverse-on-surface hover:bg-surface-variant/10 transition-colors" data-path="results" href="#">Results</a><a class="px-space-sm py-1.5 rounded-lg font-body-sm text-body-sm text-surface-variant hover:text-inverse-on-surface hover:bg-surface-variant/10 transition-colors" data-path="history" href="#">History</a><a class="px-space-sm py-1.5 rounded-lg font-body-sm text-body-sm text-surface-variant hover:text-inverse-on-surface hover:bg-surface-variant/10 transition-colors" data-path="how-it-works" href="#">How It Works</a></nav><div class="flex items-center gap-space-md"><div class="hidden sm:flex items-center gap-space-xs px-space-xs py-1 rounded bg-secondary-container/20 border border-secondary-container/30"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span class="font-label-sm text-label-sm text-surface-container-high">Active DSA: Rabin-Karp Rolling Hash</span></div><a class="hidden sm:inline-flex items-center justify-center px-space-md py-1.5 rounded bg-primary-container hover:bg-primary font-headline-sm text-body-sm text-on-primary-container hover:text-on-primary transition-colors shadow-sm" data-path="compare" href="#">Compare Documents</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-16rem)]"><div class="flex flex-col w-full">
+<!-- Subtle decorative ambient glow contained within top section -->
+<div class="relative w-full max-w-7xl mx-auto px-margin-mobile md:px-margin pt-space-md pb-space-xl">
+<!-- Top Meta & Title Breadcrumb Ribbon -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md pb-space-md">
+<div>
+<div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm mb-1 uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span class="">Workspace Console</span>
+<span class="text-outline-variant">/</span>
+<span class="">Dual Corpus Ingestion</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface font-bold tracking-tight">Compare Documents</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 max-w-2xl">
+          Add two documents to discover matching words, localized plagiarisms, and structural n-gram paraphrases in real time.
+        </p>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="bg-surface-container-low px-space-md py-1.5 rounded-xl shadow-sm flex items-center gap-space-xs text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">verified_user</span>
+<span class="">Plain text &amp; <code class="font-code-inline text-code-inline bg-surface-container px-1 py-0.5 rounded">.txt</code> • Max 50,000 words/doc</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container font-headline-sm text-body-sm shadow-sm transition-colors flex items-center gap-1.5" id="btn-load-sample" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">data_object</span>
+<span class="">Load Sample Text</span>
+</button>
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container-lowest text-secondary hover:text-error hover:bg-error-container/30 font-headline-sm text-body-sm shadow-sm transition-colors flex items-center gap-1" id="btn-clear-all" type="button">
+<span class="material-symbols-outlined text-[18px]">delete_sweep</span>
+<span class="">Clear Both</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Alert / Validation Banner (Dynamic) -->
+<div class="hidden mb-space-md p-space-sm px-space-md rounded-xl bg-error-container text-on-error-container font-body-sm text-body-sm flex items-center justify-between shadow-sm" id="validation-banner">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px]">error</span>
+<span id="validation-message" class="">Please provide content in both Document A and Document B prior to comparison analysis.</span>
+</div>
+<button class="hover:opacity-75" onclick="document.getElementById('validation-banner').classList.add('hidden')" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Main Dual Input Workbench (12-column Grid) -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter mb-space-lg">
+<!-- Left Panel: Document A -->
+<section class="flex flex-col bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden" id="panel-doc-a">
+<!-- Panel Header -->
+<div class="bg-surface-container-low px-space-md py-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-6 h-6 rounded-md bg-secondary text-on-secondary flex items-center justify-center font-label-sm text-label-sm font-bold">A</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Document A (Source / Canonical)</h2>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm text-secondary bg-surface-container px-2 py-0.5 rounded-md" id="doc-a-wordcount">0 words • 0 chars</span>
+<span class="font-label-sm text-label-sm text-primary bg-primary-fixed/30 px-2 py-0.5 rounded-md flex items-center gap-1" id="doc-a-status">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+              Ready
+            </span>
+</div>
+</div>
+<!-- Mode Toggle Segmented Control -->
+<div class="px-space-md pt-space-sm pb-space-xs flex items-center justify-between bg-surface-container-lowest">
+<div class="inline-flex p-0.5 bg-surface-container rounded-lg font-label-md text-label-md">
+<button class="px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface shadow-xs transition-all font-semibold flex items-center gap-1" id="tab-a-paste" type="button">
+<span class="material-symbols-outlined text-[15px]">edit_note</span> Paste Text
+            </button>
+<button class="px-space-sm py-1 rounded text-secondary hover:text-on-surface transition-all flex items-center gap-1" id="tab-a-upload" type="button">
+<span class="material-symbols-outlined text-[15px]">upload_file</span> Upload .txt
+            </button>
+</div>
+<div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">history_edu</span>
+<span class="">Academic Source</span>
+</div>
+</div>
+<!-- Editor View A -->
+<div class="relative flex-1 p-space-md flex flex-col" id="view-a-paste">
+<textarea class="w-full h-80 p-space-sm bg-surface rounded-lg font-code-inline text-body-sm text-on-surface placeholder:text-secondary/60 focus:bg-surface-container-lowest focus:outline-none transition-all resize-y leading-relaxed" id="input-doc-a" placeholder="Paste or type first document text here (e.g. baseline academic abstract or report)..." rows="14"></textarea>
+</div>
+<!-- Dropzone View A (Initially Hidden) -->
+<div class="hidden p-space-md flex-1" id="view-a-upload">
+<div class="h-80 rounded-xl bg-surface-container-low flex flex-col items-center justify-center text-center p-space-lg transition-colors cursor-pointer group" id="dropzone-a">
+<input accept=".txt" class="hidden" id="file-input-a" type="file">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary mb-space-sm group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[26px]">cloud_upload</span>
+</div>
+<p class="font-headline-sm text-body-md text-on-surface font-semibold mb-1">Drag and drop file here, or browse</p>
+<p class="font-body-sm text-body-sm text-secondary mb-space-md">Plain text format (.txt) encoded in UTF-8 up to 5MB</p>
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high font-headline-sm text-body-sm shadow-xs transition-colors" onclick="document.getElementById('file-input-a').click()" type="button">
+              Browse File
+            </button>
+<span class="hidden mt-space-sm font-label-sm text-label-sm text-primary font-medium" id="file-meta-a"></span>
+</div>
+</div>
+<!-- Panel Footer Metadata Ribbon -->
+<div class="bg-surface-container-low px-space-md py-space-xs flex items-center justify-between text-secondary font-label-sm text-label-sm">
+<div class="flex items-center gap-space-md">
+<span class="">Encoding: <strong class="text-on-surface font-semibold">UTF-8</strong></span>
+<span id="cursor-pos-a" class="">Ln 1, Col 1</span>
+</div>
+<button class="hover:text-error transition-colors flex items-center gap-0.5" id="btn-clear-a" type="button">
+<span class="material-symbols-outlined text-[14px]">clear</span>
+<span class="">Clear Text</span>
+</button>
+</div>
+</section>
+<!-- Right Panel: Document B -->
+<section class="flex flex-col bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden" id="panel-doc-b">
+<!-- Panel Header -->
+<div class="bg-surface-container-low px-space-md py-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-6 h-6 rounded-md bg-tertiary text-on-tertiary flex items-center justify-center font-label-sm text-label-sm font-bold">B</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Document B (Suspect / Test Corpus)</h2>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm text-secondary bg-surface-container px-2 py-0.5 rounded-md" id="doc-b-wordcount">0 words • 0 chars</span>
+<span class="font-label-sm text-label-sm text-primary bg-primary-fixed/30 px-2 py-0.5 rounded-md flex items-center gap-1" id="doc-b-status">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+              Ready
+            </span>
+</div>
+</div>
+<!-- Mode Toggle Segmented Control -->
+<div class="px-space-md pt-space-sm pb-space-xs flex items-center justify-between bg-surface-container-lowest">
+<div class="inline-flex p-0.5 bg-surface-container rounded-lg font-label-md text-label-md">
+<button class="px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface shadow-xs transition-all font-semibold flex items-center gap-1" id="tab-b-paste" type="button">
+<span class="material-symbols-outlined text-[15px]">edit_note</span> Paste Text
+            </button>
+<button class="px-space-sm py-1 rounded text-secondary hover:text-on-surface transition-all flex items-center gap-1" id="tab-b-upload" type="button">
+<span class="material-symbols-outlined text-[15px]">upload_file</span> Upload .txt
+            </button>
+</div>
+<div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">find_in_page</span>
+<span class="">Query Document</span>
+</div>
+</div>
+<!-- Editor View B -->
+<div class="relative flex-1 p-space-md flex flex-col" id="view-b-paste">
+<textarea class="w-full h-80 p-space-sm bg-surface rounded-lg font-code-inline text-body-sm text-on-surface placeholder:text-secondary/60 focus:bg-surface-container-lowest focus:outline-none transition-all resize-y leading-relaxed" id="input-doc-b" placeholder="Paste or type second document text here (document under verification)..." rows="14"></textarea>
+</div>
+<!-- Dropzone View B (Initially Hidden) -->
+<div class="hidden p-space-md flex-1" id="view-b-upload">
+<div class="h-80 rounded-xl bg-surface-container-low flex flex-col items-center justify-center text-center p-space-lg transition-colors cursor-pointer group" id="dropzone-b">
+<input accept=".txt" class="hidden" id="file-input-b" type="file">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary mb-space-sm group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[26px]">cloud_upload</span>
+</div>
+<p class="font-headline-sm text-body-md text-on-surface font-semibold mb-1">Drag and drop file here, or browse</p>
+<p class="font-body-sm text-body-sm text-secondary mb-space-md">Plain text format (.txt) encoded in UTF-8 up to 5MB</p>
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high font-headline-sm text-body-sm shadow-xs transition-colors" onclick="document.getElementById('file-input-b').click()" type="button">
+              Browse File
+            </button>
+<span class="hidden mt-space-sm font-label-sm text-label-sm text-primary font-medium" id="file-meta-b"></span>
+</div>
+</div>
+<!-- Panel Footer Metadata Ribbon -->
+<div class="bg-surface-container-low px-space-md py-space-xs flex items-center justify-between text-secondary font-label-sm text-label-sm">
+<div class="flex items-center gap-space-md">
+<span class="">Encoding: <strong class="text-on-surface font-semibold">UTF-8</strong></span>
+<span id="cursor-pos-b" class="">Ln 1, Col 1</span>
+</div>
+<button class="hover:text-error transition-colors flex items-center gap-0.5" id="btn-clear-b" type="button">
+<span class="material-symbols-outlined text-[14px]">clear</span>
+<span class="">Clear Text</span>
+</button>
+</div>
+</section>
+</div>
+<!-- Algorithm Settings Bar & Action Launchpad -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-lg">
+<div class="flex flex-col lg:flex-row items-center justify-between gap-space-md">
+<!-- Algorithm Tuning Parameters -->
+<div class="flex flex-wrap items-center gap-space-lg w-full lg:w-auto">
+<div class="flex items-center gap-space-sm">
+<label class="font-label-md text-label-md text-on-surface font-semibold whitespace-nowrap" for="param-ngram">Min Overlap Length:</label>
+<div class="flex items-center gap-space-xs bg-surface-container px-space-sm py-1 rounded-lg">
+<input class="accent-primary w-24 cursor-pointer" id="param-ngram" max="12" min="3" oninput="document.getElementById('ngram-val').innerText = this.value + ' words'" type="range" value="4">
+<span class="font-code-inline text-code-inline font-bold text-primary w-16" id="ngram-val">4 words</span>
+</div>
+</div>
+<label class="inline-flex items-center gap-space-xs cursor-pointer select-none">
+<input checked="" class="w-4 h-4 accent-primary rounded cursor-pointer" id="param-case" type="checkbox">
+<span class="font-body-sm text-body-sm text-on-surface">Case-insensitive normalization</span>
+</label>
+<label class="inline-flex items-center gap-space-xs cursor-pointer select-none">
+<input class="w-4 h-4 accent-primary rounded cursor-pointer" id="param-stopwords" type="checkbox">
+<span class="font-body-sm text-body-sm text-on-surface">Filter Stop Words</span>
+</label>
+</div>
+<!-- Quick Demo Switchers -->
+<div class="flex items-center gap-space-xs self-start lg:self-auto">
+<span class="font-label-sm text-label-sm text-secondary uppercase mr-1">Presets:</span>
+<button class="px-2.5 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors" id="demo-abstract" type="button">
+            Abstract Paraphrase
+          </button>
+<button class="px-2.5 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors" id="demo-exact" type="button">
+            Exact Paragraph Match
+          </button>
+</div>
+</div>
+<!-- Action Hero Row -->
+<div class="mt-space-md pt-space-md flex flex-col md:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm text-secondary font-body-sm text-body-sm">
+<div class="w-2.5 h-2.5 rounded-full bg-primary-container animate-ping"></div>
+<span class="">API Handshake: <code class="font-code-inline text-code-inline bg-surface-container px-1 py-0.5 rounded text-on-surface">POST /api/compare</code> • Polynomial Rolling Hash ready</span>
+</div>
+<div class="flex items-center gap-space-md w-full md:w-auto">
+<div class="hidden items-center gap-space-xs text-primary font-label-md text-label-md" id="processing-indicator">
+<span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
+<span class="">Calculating rolling hashes...</span>
+</div>
+<button class="w-full md:w-auto px-space-xl py-2.5 rounded-xl bg-primary-container hover:bg-primary text-on-primary-container hover:text-on-primary font-headline-sm text-body-md font-bold tracking-tight shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-space-xs group" id="btn-compare" type="button">
+<span class="material-symbols-outlined text-[20px] transition-transform group-hover:scale-110">compare_arrows</span>
+<span class="">Compare Documents</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Real-time In-Session Telemetry & Comparison Output (Revealed on analysis run) -->
+<div class="hidden mb-space-lg bg-surface-container-lowest rounded-xl p-space-md shadow-sm" id="results-quick-view">
+<div class="flex items-center justify-between pb-space-sm mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">insights</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Algorithmic Diff Computation Result</h3>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="px-space-sm py-0.5 rounded font-code-inline text-label-md font-bold bg-primary-fixed text-on-primary-fixed" id="badge-score">68.4% Match</span>
+<a class="px-space-sm py-1 rounded bg-surface-container text-on-surface hover:bg-surface-container-high font-label-md text-label-md transition-colors flex items-center gap-1" data-path="results" href="#">
+<span class="">Open Deep Inspector</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Quick Metrics Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-sm mb-space-md">
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Jaccard Metric</span>
+<p class="font-code-inline text-headline-sm text-on-surface font-bold mt-0.5" id="metric-jaccard">0.684</p>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Cosine Vector</span>
+<p class="font-code-inline text-headline-sm text-on-surface font-bold mt-0.5" id="metric-cosine">0.742</p>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Common N-Grams</span>
+<p class="font-code-inline text-headline-sm text-primary font-bold mt-0.5" id="metric-ngrams">38 matches</p>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Execution Latency</span>
+<p class="font-code-inline text-headline-sm text-secondary font-bold mt-0.5" id="metric-latency">14.2 ms</p>
+</div>
+</div>
+<!-- Highlighted snippet diff preview -->
+<div class="p-space-sm rounded-lg bg-surface text-body-sm font-code-inline text-on-surface leading-relaxed">
+<div class="text-secondary font-label-sm text-label-sm mb-1 uppercase tracking-wider">Identified Matching Segment (Rabin-Karp Rolling Window)</div>
+<p class="p-2 rounded bg-surface-container-lowest">
+<span class="bg-primary-fixed/50 text-on-primary-fixed px-1 py-0.5 rounded">algorithmic analysis workbench implementing multi-tiered string metrics</span>, token overlapping models, and <span class="bg-primary-fixed/50 text-on-primary-fixed px-1 py-0.5 rounded">Rabin-Karp rolling hash verification</span> to detect academic overlaps reliably.
+        </p>
+</div>
+</div>
+<!-- Recent Session In-Memory Comparisons Drawer -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[20px]">history</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Recent Session Comparisons</h3>
+<span class="ml-1 font-label-sm text-label-sm text-secondary bg-surface-container px-2 py-0.5 rounded-full" id="history-counter">0 records</span>
+</div>
+<div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-tertiary">memory</span>
+<span class="">Zero database footprint • Local session in-memory only</span>
+</div>
+</div>
+<!-- Empty State -->
+<div class="py-space-xl flex flex-col items-center justify-center text-center" id="history-empty-state">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-secondary mb-space-sm">
+<span class="material-symbols-outlined text-[24px]">dataset</span>
+</div>
+<p class="font-headline-sm text-body-md text-on-surface font-medium">No previous comparisons in this session.</p>
+<p class="font-body-sm text-body-sm text-secondary max-w-md mt-1">
+          Processed comparisons will appear here temporarily until page reload. Documents are processed ephemerally in RAM.
+        </p>
+</div>
+<!-- Session History Table (Populated dynamically) -->
+<div class="hidden overflow-x-auto" id="history-table-container">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="bg-surface-container-low text-secondary font-label-sm text-label-sm uppercase">
+<th class="py-2 px-3 rounded-l-lg">Timestamp</th>
+<th class="py-2 px-3">Doc A Length</th>
+<th class="py-2 px-3">Doc B Length</th>
+<th class="py-2 px-3">Similarity</th>
+<th class="py-2 px-3">Method</th>
+<th class="py-2 px-3 rounded-r-lg text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container" id="history-table-body">
+<!-- Row inserted via JS -->
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</div>
+<script>
+  (function () {
+    // DOM References
+    const inputA = document.getElementById('input-doc-a');
+    const inputB = document.getElementById('input-doc-b');
+    const wordcountA = document.getElementById('doc-a-wordcount');
+    const wordcountB = document.getElementById('doc-b-wordcount');
+    const cursorPosA = document.getElementById('cursor-pos-a');
+    const cursorPosB = document.getElementById('cursor-pos-b');
+    const btnClearA = document.getElementById('btn-clear-a');
+    const btnClearB = document.getElementById('btn-clear-b');
+    const btnClearAll = document.getElementById('btn-clear-all');
+    const btnLoadSample = document.getElementById('btn-load-sample');
+    const btnCompare = document.getElementById('btn-compare');
+    const banner = document.getElementById('validation-banner');
+    const bannerMsg = document.getElementById('validation-message');
+    const resultsQuickView = document.getElementById('results-quick-view');
+    const processingIndicator = document.getElementById('processing-indicator');
+
+    // Preset Data
+    const sampleA = "TextTrace is an academic algorithmic analysis workbench developed at Rayat Bahra University. It implements multi-tiered string metrics, token overlapping models, and polynomial rolling hash algorithms to evaluate document similarity rigorously. In modern computational linguistics, fast duplicate detection requires Jaccard metrics and normalized Levenshtein bounds to prevent false positives.";
+    
+    const sampleB_Paraphrase = "TextTrace is an algorithmic analysis workbench created for document similarity detection. It uses token overlapping models and polynomial rolling hash techniques for computing textual metrics. Furthermore, in computational linguistics, finding duplicates accurately uses Jaccard metrics and normalized Levenshtein bounds.";
+
+    const sampleB_Exact = sampleA;
+
+    // Helper: Count words & chars
+    function updateCounts(textarea, counterEl) {
+      const val = textarea.value.trim();
+      const chars = textarea.value.length;
+      const words = val ? val.split(/\s+/).length : 0;
+      counterEl.innerText = `${words} words • ${chars} chars`;
+    }
+
+    // Helper: Cursor Tracker
+    function updateCursor(textarea, trackerEl) {
+      const pos = textarea.selectionStart;
+      const text = textarea.value.substring(0, pos);
+      const lines = text.split('\n');
+      const curLine = lines.length;
+      const curCol = lines[lines.length - 1].length + 1;
+      trackerEl.innerText = `Ln ${curLine}, Col ${curCol}`;
+    }
+
+    // Input Listeners
+    inputA.addEventListener('input', () => updateCounts(inputA, wordcountA));
+    inputB.addEventListener('input', () => updateCounts(inputB, wordcountB));
+    inputA.addEventListener('keyup', () => updateCursor(inputA, cursorPosA));
+    inputA.addEventListener('click', () => updateCursor(inputA, cursorPosA));
+    inputB.addEventListener('keyup', () => updateCursor(inputB, cursorPosB));
+    inputB.addEventListener('click', () => updateCursor(inputB, cursorPosB));
+
+    // Clear actions
+    btnClearA.addEventListener('click', () => {
+      inputA.value = '';
+      updateCounts(inputA, wordcountA);
+      cursorPosA.innerText = 'Ln 1, Col 1';
+    });
+
+    btnClearB.addEventListener('click', () => {
+      inputB.value = '';
+      updateCounts(inputB, wordcountB);
+      cursorPosB.innerText = 'Ln 1, Col 1';
+    });
+
+    btnClearAll.addEventListener('click', () => {
+      inputA.value = '';
+      inputB.value = '';
+      updateCounts(inputA, wordcountA);
+      updateCounts(inputB, wordcountB);
+      cursorPosA.innerText = 'Ln 1, Col 1';
+      cursorPosB.innerText = 'Ln 1, Col 1';
+      resultsQuickView.classList.add('hidden');
+      banner.classList.add('hidden');
+    });
+
+    // Sample Fillers
+    btnLoadSample.addEventListener('click', () => {
+      inputA.value = sampleA;
+      inputB.value = sampleB_Paraphrase;
+      updateCounts(inputA, wordcountA);
+      updateCounts(inputB, wordcountB);
+      banner.classList.add('hidden');
+    });
+
+    document.getElementById('demo-abstract').addEventListener('click', () => {
+      inputA.value = sampleA;
+      inputB.value = sampleB_Paraphrase;
+      updateCounts(inputA, wordcountA);
+      updateCounts(inputB, wordcountB);
+    });
+
+    document.getElementById('demo-exact').addEventListener('click', () => {
+      inputA.value = sampleA;
+      inputB.value = sampleB_Exact;
+      updateCounts(inputA, wordcountA);
+      updateCounts(inputB, wordcountB);
+    });
+
+    // Tab Switchers (Doc A)
+    const tabAPaste = document.getElementById('tab-a-paste');
+    const tabAUpload = document.getElementById('tab-a-upload');
+    const viewAPaste = document.getElementById('view-a-paste');
+    const viewAUpload = document.getElementById('view-a-upload');
+
+    tabAPaste.addEventListener('click', () => {
+      tabAPaste.className = "px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface shadow-xs transition-all font-semibold flex items-center gap-1";
+      tabAUpload.className = "px-space-sm py-1 rounded text-secondary hover:text-on-surface transition-all flex items-center gap-1";
+      viewAPaste.classList.remove('hidden');
+      viewAUpload.classList.add('hidden');
+    });
+
+    tabAUpload.addEventListener('click', () => {
+      tabAUpload.className = "px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface shadow-xs transition-all font-semibold flex items-center gap-1";
+      tabAPaste.className = "px-space-sm py-1 rounded text-secondary hover:text-on-surface transition-all flex items-center gap-1";
+      viewAUpload.classList.remove('hidden');
+      viewAPaste.classList.add('hidden');
+    });
+
+    // Tab Switchers (Doc B)
+    const tabBPaste = document.getElementById('tab-b-paste');
+    const tabBUpload = document.getElementById('tab-b-upload');
+    const viewBPaste = document.getElementById('view-b-paste');
+    const viewBUpload = document.getElementById('view-b-upload');
+
+    tabBPaste.addEventListener('click', () => {
+      tabBPaste.className = "px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface shadow-xs transition-all font-semibold flex items-center gap-1";
+      tabBUpload.className = "px-space-sm py-1 rounded text-secondary hover:text-on-surface transition-all flex items-center gap-1";
+      viewBPaste.classList.remove('hidden');
+      viewBUpload.classList.add('hidden');
+    });
+
+    tabBUpload.addEventListener('click', () => {
+      tabBUpload.className = "px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface shadow-xs transition-all font-semibold flex items-center gap-1";
+      tabBPaste.className = "px-space-sm py-1 rounded text-secondary hover:text-on-surface transition-all flex items-center gap-1";
+      viewBUpload.classList.remove('hidden');
+      viewBPaste.classList.add('hidden');
+    });
+
+    // File Drop handling A
+    const fileInA = document.getElementById('file-input-a');
+    fileInA.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (re) => {
+          inputA.value = re.target.result;
+          updateCounts(inputA, wordcountA);
+          tabAPaste.click();
+          document.getElementById('file-meta-a').innerText = `Loaded: ${file.name} (${Math.round(file.size / 1024)} KB)`;
+          document.getElementById('file-meta-a').classList.remove('hidden');
+        };
+        reader.readAsText(file);
+      }
+    });
+
+    // File Drop handling B
+    const fileInB = document.getElementById('file-input-b');
+    fileInB.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (re) => {
+          inputB.value = re.target.result;
+          updateCounts(inputB, wordcountB);
+          tabBPaste.click();
+          document.getElementById('file-meta-b').innerText = `Loaded: ${file.name} (${Math.round(file.size / 1024)} KB)`;
+          document.getElementById('file-meta-b').classList.remove('hidden');
+        };
+        reader.readAsText(file);
+      }
+    });
+
+    // Comparison Action & Validation Execution
+    const historyList = [];
+    const historyTable = document.getElementById('history-table-container');
+    const historyBody = document.getElementById('history-table-body');
+    const historyEmpty = document.getElementById('history-empty-state');
+    const historyCounter = document.getElementById('history-counter');
+
+    btnCompare.addEventListener('click', () => {
+      const textA = inputA.value.trim();
+      const textB = inputB.value.trim();
+
+      if (!textA || !textB) {
+        bannerMsg.innerText = !textA && !textB 
+          ? "Please provide text for both Document A and Document B."
+          : (!textA ? "Document A is empty. Please paste text or load a file." : "Document B is empty. Please paste text or load a file.");
+        banner.classList.remove('hidden');
+        return;
+      }
+
+      banner.classList.add('hidden');
+      processingIndicator.classList.remove('hidden');
+      processingIndicator.classList.add('flex');
+
+      // Realistic mock asynchronous calculation (simulating POST /api/compare)
+      setTimeout(() => {
+        processingIndicator.classList.add('hidden');
+        processingIndicator.classList.remove('flex');
+        resultsQuickView.classList.remove('hidden');
+
+        // Simple real-time client metric approximation for preview
+        const wordsA = textA.toLowerCase().split(/\s+/);
+        const wordsB = textB.toLowerCase().split(/\s+/);
+        const setA = new Set(wordsA);
+        const setB = new Set(wordsB);
+        let intersection = 0;
+        setA.forEach(w => { if (setB.has(w)) intersection++; });
+        const union = new Set([...setA, ...setB]).size;
+        const jaccard = union > 0 ? (intersection / union) : 0;
+        const similarityScore = Math.round(jaccard * 1000) / 10;
+
+        // Populate quick metrics
+        document.getElementById('badge-score').innerText = `${similarityScore}% Match`;
+        document.getElementById('metric-jaccard').innerText = (jaccard).toFixed(3);
+        document.getElementById('metric-cosine').innerText = Math.min(1.0, (jaccard + 0.08)).toFixed(3);
+        document.getElementById('metric-ngrams').innerText = `${intersection} overlapping tokens`;
+        document.getElementById('metric-latency').innerText = `${(Math.random() * 8 + 8).toFixed(1)} ms`;
+
+        // Push to temporary session history
+        const record = {
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+          wordsA: wordsA.length,
+          wordsB: wordsB.length,
+          score: similarityScore,
+          method: 'Rabin-Karp + Jaccard'
+        };
+        historyList.unshift(record);
+
+        // Update history drawer UI
+        historyEmpty.classList.add('hidden');
+        historyTable.classList.remove('hidden');
+        historyCounter.innerText = `${historyList.length} ${historyList.length === 1 ? 'record' : 'records'}`;
+
+        const row = document.createElement('tr');
+        row.className = "hover:bg-surface-container/30 transition-colors";
+        row.innerHTML = `
+          <td class="py-2.5 px-3 font-code-inline text-code-inline text-secondary">${record.time}</td>
+          <td class="py-2.5 px-3 font-code-inline text-code-inline">${record.wordsA} words</td>
+          <td class="py-2.5 px-3 font-code-inline text-code-inline">${record.wordsB} words</td>
+          <td class="py-2.5 px-3">
+            <span class="px-2 py-0.5 rounded font-code-inline text-code-inline font-bold ${record.score > 50 ? 'bg-primary-fixed text-on-primary-fixed' : 'bg-surface-container text-on-surface'}">${record.score}%</span>
+          </td>
+          <td class="py-2.5 px-3 text-secondary font-label-sm text-label-sm">${record.method}</td>
+          <td class="py-2.5 px-3 text-right">
+            <a href="#" data-path="results" class="font-label-sm text-label-sm text-primary hover:underline font-semibold">Inspect Diff &rarr;</a>
+          </td>
+        `;
+        historyBody.prepend(row);
+
+        // Smooth scroll to results quick view
+        resultsQuickView.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 350);
+    });
+  })();
+</script></main><footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 mt-auto"><div class="max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-xl"><div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-space-lg"><div class="md:col-span-2 space-y-space-sm"><div class="flex items-center gap-space-xs"><img alt="TextTrace Logo" class="h-6 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeO_h5ZBZqC5CoCso_x6wtgZ-20wao31kKxkYPMPo-bBFEiKy01LJboiK99ps3YiJM1MuHp8I-RHXvGXyJNm9KGe-pG1vedq7CaSdfHNM5n4YD0fiIe2Cj_bSxBkIPnhr1M6565_Og5LlEAQ20y5kXWH7Wr-E2Gr5AuP8HKaCXYWmlZC1ubdZirWd64yujt8SHV4kWzxVopTkZtqyjIas0S3kVIct_RWvU3WD73mdRgOUJjhmqiSGT"><span class="font-headline-sm text-headline-sm text-on-surface">TextTrace</span></div><p class="font-body-sm text-body-sm text-on-surface-variant max-w-md">Computational linguistic analysis workbench implementing multi-tiered string metrics, rolling hash algorithms, and token overlapping models for robust document similarity detection.</p><div class="pt-space-xs"><span class="font-label-sm text-label-sm text-secondary font-semibold">Rayat Bahra University · Department of Computer Science &amp; Engineering</span></div></div><div><h4 class="font-headline-sm text-body-sm text-on-surface uppercase tracking-wider mb-space-sm">Algorithmic Models</h4><ul class="space-y-space-xs font-label-md text-label-md text-on-surface-variant"><li class="">Rabin-Karp Rolling Hash</li><li class="">Token-Level N-Gram Overlap</li><li class="">Jaccard &amp; Cosine Metric</li><li class="">Levenshtein Distance Engine</li></ul></div><div><h4 class="font-headline-sm text-body-sm text-on-surface uppercase tracking-wider mb-space-sm">Academic Scope</h4><ul class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant"><li class="">Author: Harsh Garg (B.Tech CSE)</li><li class="">Author: Babishya (B.Tech CSE)</li><li class="">Instructor &amp; Evaluator Console</li><li class="">Privacy: Ephemeral In-Memory Diff</li></ul></div></div><div class="pt-space-md border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-space-sm"><p class="font-label-sm text-label-sm text-secondary">© 2025 TextTrace · Rayat Bahra University B.Tech Capstone Project. All rights reserved.</p><p class="font-label-sm text-label-sm text-secondary">Zero Data Retention Guarantee · Localhost Flask Environment</p></div></div></footer>
+
+</body></html>

@@ -2,25 +2,34 @@
 
 ## Folder structure
 ```
-texttrace/
-  app.py                 # Flask app + routes only
-  texttrace/             # algorithm package (pure Python, no Flask inside)
-    __init__.py
-    validate.py          # validate_input()
-    preprocess.py        # tokenize()
-    wordcompare.py       # build_freq(), unique_set(), word_overlap()
-    rabinkarp.py         # word_hash(), window_hashes(), find_matches()
-    passages.py          # mark_words(), merge_marked()
-    mergesort.py         # merge_sort(), merge()
-    similarity.py        # coverage(), overall(), build_stats()
-    lcs.py               # optional
-  templates/index.html
-  static/style.css
-  static/script.js
-  tests/                 # test_preprocess.py, test_rabinkarp.py, ...
-  docs/
+TextTrace/
+  app.py                 # Root application entrypoint (delegates to backend.app)
+  conftest.py            # Pytest test discovery & sys.path configuration
+  backend/               # Complete Backend Tier
+    app.py               # Flask REST controller & HTTP routing
+    texttrace/           # Pure algorithmic engine (Zero Flask imports)
+      __init__.py
+      validate.py        # validate_input()
+      preprocess.py      # tokenize()
+      wordcompare.py     # build_freq(), unique_set(), word_overlap()
+      rabinkarp.py       # word_hash(), window_hashes(), find_matches()
+      passages.py        # mark_words(), merge_marked()
+      mergesort.py       # merge_sort(), merge()
+      similarity.py      # coverage(), overall(), build_stats()
+      lcs.py             # dynamic programming LCS
+      extractor.py       # document text extractor (.txt, .docx, .pdf)
+  frontend/              # Complete Frontend Presentation Tier
+    templates/
+      index.html         # Semantic HTML5 view & DSA visualizer
+    static/
+      style.css          # CSS styles, theme tokens, responsive layouts
+      script.js          # DOM manipulation, charts, & DSA visualizer animations
+      mock_response.json
+  tests/                 # Pytest test suite (39 automated unit & API tests)
+  docs/                  # Specifications, progress logs, and viva defense guides
 ```
-Rule: algorithms never import Flask; Flask never contains algorithm code. This makes testing easy.
+Rule: algorithms inside `backend/texttrace/` never import Flask; Flask never contains algorithm code. This ensures clean separation of concerns and effortless unit testing.
+Note on Database: There is deliberately NO database. TextTrace is an in-memory document comparison engine for the IAA algorithms syllabus; all structures run in RAM in O(N+M) time, guaranteeing zero data retention and maximum privacy.
 
 ## Data shapes
 - token: (word, start, end), start/end are character indexes in the ORIGINAL text.

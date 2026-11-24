@@ -1,0 +1,395 @@
+<!DOCTYPE html><html class="light" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>TextTrace — Document Similarity Checker</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "outline": "#6c7a71", "primary": "#006c49", "tertiary": "#006c4c", "on-secondary-fixed-variant": "#37485d", "on-surface": "#0f1c2b", "secondary": "#4f6075", "on-primary-container": "#00422b", "surface-variant": "#d6e4f8", "surface-container-lowest": "#ffffff", "on-tertiary-container": "#00422d", "on-error": "#ffffff", "on-primary-fixed": "#002113", "surface-container-highest": "#d6e4f8", "primary-fixed-dim": "#4edea3", "on-primary": "#ffffff", "primary-fixed": "#6ffbbe", "outline-variant": "#bbcabf", "inverse-on-surface": "#eaf1ff", "on-primary-fixed-variant": "#005236", "surface-tint": "#006c49", "on-tertiary-fixed-variant": "#005139", "secondary-container": "#d2e4fe", "on-tertiary": "#ffffff", "surface-container": "#e5efff", "on-secondary-container": "#55667c", "on-secondary": "#ffffff", "error-container": "#ffdad6", "on-error-container": "#93000a", "background": "#f8f9ff", "secondary-fixed": "#d2e4fe", "error": "#ba1a1a", "surface": "#f8f9ff", "inverse-primary": "#4edea3", "tertiary-fixed": "#94f6ca", "surface-container-high": "#dce9fe", "on-secondary-fixed": "#0a1d2f", "secondary-fixed-dim": "#b6c8e1", "surface-dim": "#cedbef", "surface-container-low": "#eef4ff", "on-background": "#0f1c2b", "surface-bright": "#f8f9ff", "tertiary-container": "#52b48c", "on-tertiary-fixed": "#002115", "on-surface-variant": "#3c4a42", "tertiary-fixed-dim": "#78d9af", "inverse-surface": "#253141", "primary-container": "#10b981" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-lg": "1.5rem", "gutter": "1.25rem", "space-md": "1rem", "space-xl": "2.25rem", "margin-mobile": "1rem", "space-xs": "0.25rem", "margin": "2rem", "space-sm": "0.5rem", "gutter-mobile": "0.75rem" }, "fontFamily": { "body-md": ["Inter"], "code-inline": ["JetBrains Mono"], "headline-sm": ["Inter"], "body-sm": ["Inter"], "label-sm": ["JetBrains Mono"], "headline-md": ["Inter"], "body-lg": ["Inter"], "headline-xl": ["Inter"], "label-md": ["JetBrains Mono"], "headline-lg": ["Inter"], "headline-xl-mobile": ["Inter"] }, "fontSize": { "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "code-inline": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "label-sm": ["11px", { "lineHeight": "16px", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "headline-xl": ["32px", { "lineHeight": "40px", "fontWeight": "700" }], "label-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "headline-xl-mobile": ["26px", { "lineHeight": "34px", "fontWeight": "700" }] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-inverse-surface border-b border-outline-variant/20"><div class="max-w-7xl mx-auto px-margin-mobile md:px-margin h-16 flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md"><a class="flex items-center gap-space-sm" data-path="home" href="#"><img alt="TextTrace Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeO_h5ZBZqC5CoCso_x6wtgZ-20wao31kKxkYPMPo-bBFEiKy01LJboiK99ps3YiJM1MuHp8I-RHXvGXyJNm9KGe-pG1vedq7CaSdfHNM5n4YD0fiIe2Cj_bSxBkIPnhr1M6565_Og5LlEAQ20y5kXWH7Wr-E2Gr5AuP8HKaCXYWmlZC1ubdZirWd64yujt8SHV4kWzxVopTkZtqyjIas0S3kVIct_RWvU3WD73mdRgOUJjhmqiSGT"><span class="font-headline-sm text-headline-sm text-inverse-on-surface font-bold tracking-tight">TextTrace</span></a><span class="hidden lg:inline-flex items-center px-space-xs py-0.5 rounded-lg bg-surface-variant/20 border border-outline-variant/30 text-inverse-on-surface font-label-sm text-label-sm">DSA Project · RBU</span></div><nav class="hidden md:flex items-center gap-space-xs" data-active-classes="bg-surface-variant/20 text-inverse-on-surface font-headline-sm"><a aria-current="page" class="px-space-sm py-1.5 rounded-lg transition-colors bg-surface-variant/20 text-inverse-on-surface font-headline-sm" data-path="home" href="#">Home</a><a class="px-space-sm py-1.5 rounded-lg font-body-sm text-body-sm text-surface-variant hover:text-inverse-on-surface hover:bg-surface-variant/10 transition-colors" data-path="compare" href="#">Compare</a><a class="px-space-sm py-1.5 rounded-lg font-body-sm text-body-sm text-surface-variant hover:text-inverse-on-surface hover:bg-surface-variant/10 transition-colors" data-path="results" href="#">Results</a><a class="px-space-sm py-1.5 rounded-lg font-body-sm text-body-sm text-surface-variant hover:text-inverse-on-surface hover:bg-surface-variant/10 transition-colors" data-path="history" href="#">History</a><a class="px-space-sm py-1.5 rounded-lg font-body-sm text-body-sm text-surface-variant hover:text-inverse-on-surface hover:bg-surface-variant/10 transition-colors" data-path="how-it-works" href="#">How It Works</a></nav><div class="flex items-center gap-space-md"><div class="hidden sm:flex items-center gap-space-xs px-space-xs py-1 rounded bg-secondary-container/20 border border-secondary-container/30"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span class="font-label-sm text-label-sm text-surface-container-high">Active DSA: Rabin-Karp &amp; Token Overlap</span></div><a class="hidden sm:inline-flex items-center justify-center px-space-md py-1.5 rounded bg-primary-container hover:bg-primary font-headline-sm text-body-sm text-on-primary-container hover:text-on-primary transition-colors shadow-sm" data-path="compare" href="#">Compare Documents</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-16rem)]"><div class="flex flex-col w-full">
+<!-- Top Notification / Status Banner -->
+<div class="w-full bg-surface-container border-b border-outline-variant/30 py-space-xs px-margin-mobile md:px-margin">
+<div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-space-xs text-on-surface-variant font-label-sm text-label-sm">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="font-code-inline text-code-inline font-medium">TextTrace Engine v2.4</span>
+<span class="text-outline">•</span>
+<span class="">Deterministic Lexical Matching Console</span>
+</div>
+<div class="hidden sm:flex items-center gap-space-md text-secondary">
+<span class="">O(n + m) Rolling Hash</span>
+<span class="">Zero Storage Retention</span>
+<span class="font-code-inline text-code-inline text-primary font-semibold">Flask In-Memory Diff</span>
+</div>
+</div>
+</div>
+<!-- Hero Section -->
+<section class="w-full py-space-xl md:py-16 px-margin-mobile md:px-margin bg-surface">
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter lg:gap-12 items-center">
+<!-- Left Column: Core Positioning -->
+<div class="lg:col-span-6 flex flex-col items-start space-y-space-md">
+<!-- Eyebrow Pill -->
+<div class="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface-container-high border border-outline-variant/40 shadow-sm">
+<span class="material-symbols-outlined text-primary text-[15px]">analytics</span>
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider font-semibold">Algorithm Based · Simple · Transparent</span>
+</div>
+<!-- Headline -->
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight leading-tight">
+          Find the overlap. <br>
+<span class="text-primary-container">Understand the text.</span>
+</h1>
+<!-- Supporting text -->
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+          Compare two documents, discover matching phrases, and explore textual similarity with a transparent, algorithm-based analysis. Built for verifiable academic evaluation.
+        </p>
+<!-- CTAs -->
+<div class="flex flex-wrap items-center gap-space-sm pt-space-xs w-full sm:w-auto">
+<a class="inline-flex items-center justify-center gap-space-xs px-space-lg py-3 rounded bg-primary-container hover:bg-primary text-on-primary font-headline-sm text-body-md transition-all shadow-sm group" data-path="compare" href="#">
+<span class="">Compare Documents</span>
+<span class="material-symbols-outlined text-[18px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</a>
+<a class="inline-flex items-center justify-center gap-space-xs px-space-lg py-3 rounded bg-surface-container-lowest hover:bg-surface-container-high text-on-surface border border-outline-variant/60 font-headline-sm text-body-md transition-all shadow-sm" data-path="how-it-works" href="#">
+<span class="material-symbols-outlined text-secondary text-[18px]">terminal</span>
+<span class="">How It Works</span>
+</a>
+</div>
+<!-- Attribution Meta Tag -->
+<div class="pt-space-md w-full border-t border-outline-variant/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[18px]">school</span>
+<span class="font-label-sm text-label-sm text-secondary font-medium">B.Tech CSE Project · Harsh Garg &amp; Babishya · Rayat Bahra University</span>
+</div>
+<span class="font-code-inline text-code-inline px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant">Dept. of CSE 2025</span>
+</div>
+</div>
+<!-- Right Column: Scientific Workbench Diagram -->
+<div class="lg:col-span-6 w-full">
+<div class="relative bg-surface-container-lowest rounded-xl border border-outline-variant/50 p-space-md shadow-md">
+<!-- Mock Terminal / Window Header -->
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-space-xs mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-error/60"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-surface-variant"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+<span class="font-code-inline text-code-inline text-secondary ml-space-xs">dual_stream_analyzer.py</span>
+</div>
+<div class="flex items-center gap-space-xs font-code-inline text-code-inline text-secondary">
+<span class="px-space-xs py-0.5 rounded bg-surface-container">Window: k=5 grams</span>
+<span class="px-space-xs py-0.5 rounded bg-primary/10 text-primary font-semibold">Active Hash Sync</span>
+</div>
+</div>
+<!-- Dual Document Visual Plane -->
+<div class="grid grid-cols-2 gap-space-md relative">
+<!-- Document A Mock Card -->
+<div class="bg-surface rounded-lg border border-outline-variant/40 p-space-sm flex flex-col space-y-space-xs">
+<div class="flex items-center justify-between pb-1 border-b border-outline-variant/20">
+<span class="font-code-inline text-code-inline text-on-surface font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Document_A.txt
+                </span>
+<span class="font-label-sm text-label-sm text-secondary">142 tokens</span>
+</div>
+<div class="space-y-2 font-code-inline text-code-inline leading-relaxed text-on-surface-variant select-none pt-1">
+<p class="text-secondary/70">01 // Input source text stream</p>
+<p class="bg-primary-fixed/30 text-on-surface px-1 rounded border-l-2 border-primary-container">
+                  the asymptotic runtime complexity
+                </p>
+<p class="text-secondary/60">03 &nbsp;depends strongly on the rolling</p>
+<p class="bg-primary-fixed/30 text-on-surface px-1 rounded border-l-2 border-primary-container">
+                  polynomial hash function modulus
+                </p>
+<p class="text-secondary/60">05 &nbsp;to avoid premature hash collision</p>
+<p class="bg-primary-fixed/30 text-on-surface px-1 rounded border-l-2 border-primary-container">
+                  within the circular sliding window
+                </p>
+<p class="text-secondary/70">07 // End segment stream A</p>
+</div>
+</div>
+<!-- Document B Mock Card -->
+<div class="bg-surface rounded-lg border border-outline-variant/40 p-space-sm flex flex-col space-y-space-xs">
+<div class="flex items-center justify-between pb-1 border-b border-outline-variant/20">
+<span class="font-code-inline text-code-inline text-on-surface font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Document_B.txt
+                </span>
+<span class="font-label-sm text-label-sm text-secondary">138 tokens</span>
+</div>
+<div class="space-y-2 font-code-inline text-code-inline leading-relaxed text-on-surface-variant select-none pt-1">
+<p class="text-secondary/70">01 // Target candidate string</p>
+<p class="bg-primary-fixed/30 text-on-surface px-1 rounded border-l-2 border-primary-container">
+                  the asymptotic runtime complexity
+                </p>
+<p class="text-secondary/60">03 &nbsp;is primarily evaluated against</p>
+<p class="bg-primary-fixed/30 text-on-surface px-1 rounded border-l-2 border-primary-container">
+                  polynomial hash function modulus
+                </p>
+<p class="text-secondary/60">05 &nbsp;verified dynamically during trace</p>
+<p class="bg-primary-fixed/30 text-on-surface px-1 rounded border-l-2 border-primary-container">
+                  within the circular sliding window
+                </p>
+<p class="text-secondary/70">07 // End segment stream B</p>
+</div>
+</div>
+</div>
+<!-- Bottom Telemetry Bar -->
+<div class="mt-space-sm pt-space-xs border-t border-outline-variant/30 flex flex-wrap items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center gap-1.5 font-label-sm text-label-sm text-primary font-bold">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="">3 Identical Subsequences Found</span>
+</div>
+<span class="font-code-inline text-code-inline text-secondary">| Overlap: 68.4%</span>
+</div>
+<div class="flex items-center gap-space-xs font-code-inline text-code-inline text-secondary">
+<span class="px-space-xs py-0.5 rounded bg-surface-container">Rabin-Karp Pass</span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container">0.014 ms</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Three Concise Benefits -->
+<section class="w-full py-space-xl px-margin-mobile md:px-margin bg-surface-container-low border-y border-outline-variant/30">
+<div class="max-w-7xl mx-auto">
+<div class="mb-space-lg text-center md:text-left">
+<span class="font-label-sm text-label-sm text-primary font-semibold uppercase tracking-wider">Engine Architecture</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-0.5">Designed for Academic Transparency</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Benefit 1 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-lg border border-outline-variant/40 shadow-sm flex flex-col justify-between hover:border-secondary transition-colors">
+<div>
+<div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center text-primary mb-space-md">
+<span class="material-symbols-outlined text-[22px]">splitscreen</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-space-xs">Clear Comparison</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+              View both documents side by side with synchronized text alignment and color-coded match brackets for seamless visual inspection.
+            </p>
+</div>
+<div class="pt-space-md mt-space-md border-t border-outline-variant/20 flex items-center text-secondary font-code-inline text-code-inline">
+<span class="">Synchronized Scroll Diff</span>
+</div>
+</div>
+<!-- Benefit 2 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-lg border border-outline-variant/40 shadow-sm flex flex-col justify-between hover:border-secondary transition-colors">
+<div>
+<div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center text-primary mb-space-md">
+<span class="material-symbols-outlined text-[22px]">rule</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-space-xs">Transparent Analysis</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+              Understand how the token overlap score is calculated without opaque black-box metrics. Step into the raw intersection math.
+            </p>
+</div>
+<div class="pt-space-md mt-space-md border-t border-outline-variant/20 flex items-center text-secondary font-code-inline text-code-inline">
+<span class="">Dice-Sørensen · Cosine Matrix</span>
+</div>
+</div>
+<!-- Benefit 3 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-lg border border-outline-variant/40 shadow-sm flex flex-col justify-between hover:border-secondary transition-colors">
+<div>
+<div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center text-primary mb-space-md">
+<span class="material-symbols-outlined text-[22px]">memory</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-space-xs">Privacy-Conscious</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+              Process documents in-memory via Flask backend without persistent database storage by default. Transient memory garbage collection.
+            </p>
+</div>
+<div class="pt-space-md mt-space-md border-t border-outline-variant/20 flex items-center text-secondary font-code-inline text-code-inline">
+<span class="">RAM-Only Execution Stack</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: How It Works (Four-Step Flow) -->
+<section class="w-full py-space-xl px-margin-mobile md:px-margin bg-surface">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-space-lg gap-space-sm">
+<div>
+<span class="font-label-sm text-label-sm text-primary font-semibold uppercase tracking-wider">Algorithmic Pipeline</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-0.5">How TextTrace Works</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+          A four-stage deterministic data pipeline transforming raw unformatted inputs into structured comparative telemetry.
+        </p>
+</div>
+<!-- Step Cards Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter relative">
+<!-- Step 1 -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg border border-outline-variant/40 shadow-sm flex flex-col relative group">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="w-7 h-7 rounded-full bg-primary-container text-on-primary font-headline-sm text-headline-sm flex items-center justify-center font-bold">1</span>
+<span class="font-code-inline text-code-inline text-secondary">STAGE_INPUT</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-space-xs">Add Documents</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex-1">
+            Paste raw text directly or upload clean UTF-8 encoded <code class="font-code-inline text-code-inline bg-surface-container px-1 py-0.5 rounded text-on-surface">.txt</code> files into designated Document A and B workspaces.
+          </p>
+<div class="mt-space-md pt-space-xs border-t border-outline-variant/20 text-secondary font-label-sm text-label-sm">
+            File buffer reading • Char validation
+          </div>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg border border-outline-variant/40 shadow-sm flex flex-col relative group">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="w-7 h-7 rounded-full bg-surface-container-high text-on-surface font-headline-sm text-headline-sm flex items-center justify-center font-bold">2</span>
+<span class="font-code-inline text-code-inline text-secondary">STAGE_NORM</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-space-xs">Process Text</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex-1">
+            Tokenization, lowercase normalization, punctuation stripping, and configurable stop-word filtering for syntactic consistency.
+          </p>
+<div class="mt-space-md pt-space-xs border-t border-outline-variant/20 text-secondary font-label-sm text-label-sm">
+            RegEx token extraction • Filter pass
+          </div>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg border border-outline-variant/40 shadow-sm flex flex-col relative group">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="w-7 h-7 rounded-full bg-surface-container-high text-on-surface font-headline-sm text-headline-sm flex items-center justify-center font-bold">3</span>
+<span class="font-code-inline text-code-inline text-secondary">STAGE_HASH</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-space-xs">Find Matches</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex-1">
+            Rabin–Karp rolling hash substring matching identifies exact phrase subsequences alongside token-level frequency set intersection.
+          </p>
+<div class="mt-space-md pt-space-xs border-t border-outline-variant/20 text-secondary font-label-sm text-label-sm">
+            Polynomial hash • Collision check
+          </div>
+</div>
+<!-- Step 4 -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg border border-outline-variant/40 shadow-sm flex flex-col relative group">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="w-7 h-7 rounded-full bg-surface-container-high text-on-surface font-headline-sm text-headline-sm flex items-center justify-center font-bold">4</span>
+<span class="font-code-inline text-code-inline text-secondary">STAGE_DIFF</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-space-xs">Review Results</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex-1">
+            Examine the circular similarity metric, token frequency breakdown, and interactive highlighted reading view side-by-side.
+          </p>
+<div class="mt-space-md pt-space-xs border-t border-outline-variant/20 text-secondary font-label-sm text-label-sm">
+            Score telemetry • Visual report
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: DSA Concepts Used -->
+<section class="w-full py-space-xl px-margin-mobile md:px-margin bg-surface-container-low border-t border-outline-variant/30">
+<div class="max-w-7xl mx-auto">
+<div class="mb-space-lg">
+<span class="font-label-sm text-label-sm text-primary font-semibold uppercase tracking-wider">Curriculum Integration</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-0.5">Core DSA Concepts Applied</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mt-1">
+          Developed as part of Data Structures and Algorithms coursework at Rayat Bahra University, showcasing practical software engineering utility.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- DSA Concept 1 -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg border border-outline-variant/40 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">reorder</span>
+<span class="font-code-inline text-code-inline text-secondary">O(N) Complexity</span>
+</div>
+<h4 class="font-headline-sm text-body-md text-on-surface font-bold mb-space-xs">Tokenization and Preprocessing</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Text parsing, whitespace splitting, and case-folding using standard linear scans across character arrays to formulate standard token sequences.
+            </p>
+</div>
+<div class="mt-space-md pt-space-xs border-t border-outline-variant/20">
+<span class="font-code-inline text-code-inline text-secondary">Array Traversal • String Mutex</span>
+</div>
+</div>
+<!-- DSA Concept 2 -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg border border-outline-variant/40 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">tag</span>
+<span class="font-code-inline text-code-inline text-secondary">O(1) Avg Lookup</span>
+</div>
+<h4 class="font-headline-sm text-body-md text-on-surface font-bold mb-space-xs">Hash Maps &amp; Frequency Sets</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Frequency dictionaries to determine min(freqA, freqB) distinct token overlaps, counting common vocabulary occurrences rapidly.
+            </p>
+</div>
+<div class="mt-space-md pt-space-xs border-t border-outline-variant/20">
+<span class="font-code-inline text-code-inline text-secondary">Dict Buckets • Set Intersection</span>
+</div>
+</div>
+<!-- DSA Concept 3 -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg border border-outline-variant/40 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">functions</span>
+<span class="font-code-inline text-code-inline text-secondary">O(N+M) Average</span>
+</div>
+<h4 class="font-headline-sm text-body-md text-on-surface font-bold mb-space-xs">Rabin–Karp Algorithm</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Rolling polynomial hash calculation to detect exact matching phrase passages across window blocks with minimal re-computation.
+            </p>
+</div>
+<div class="mt-space-md pt-space-xs border-t border-outline-variant/20">
+<span class="font-code-inline text-code-inline text-secondary">Horner's Rule • Modulo Math</span>
+</div>
+</div>
+<!-- DSA Concept 4 -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg border border-outline-variant/40 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">calculate</span>
+<span class="font-code-inline text-code-inline text-secondary">Mathematical Metric</span>
+</div>
+<h4 class="font-headline-sm text-body-md text-on-surface font-bold mb-space-xs">Similarity Metrics</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Token-overlap formula: (2 × C / (A + B)) × 100 capturing bi-directional coverage and normalized metric proportionality.
+            </p>
+</div>
+<div class="mt-space-md pt-space-xs border-t border-outline-variant/20">
+<span class="font-code-inline text-code-inline text-secondary">Dice Coefficient • Ratio Math</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: Bottom Call to Action Banner -->
+<section class="w-full py-space-xl px-margin-mobile md:px-margin bg-inverse-surface border-t border-outline-variant/20 text-inverse-on-surface">
+<div class="max-w-7xl mx-auto rounded-xl bg-inverse-surface p-space-lg md:p-12 border border-outline-variant/20 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-space-lg shadow-xl">
+<!-- Text details -->
+<div class="max-w-2xl space-y-space-sm text-left">
+<div class="inline-flex items-center gap-space-xs px-space-sm py-0.5 rounded bg-surface-variant/20 border border-outline-variant/30 text-surface-container-high font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="">Ready for live academic testing</span>
+</div>
+<h2 class="font-headline-lg text-headline-xl text-inverse-on-surface tracking-tight">
+          Test the algorithm with your own documents
+        </h2>
+<p class="font-body-md text-body-md text-surface-variant/80">
+          Evaluators, professors, and students are invited to input test pairs, adjust matching parameters, and verify time complexity metrics in real-time.
+        </p>
+<div class="flex flex-wrap items-center gap-space-md pt-space-xs font-code-inline text-code-inline text-surface-container-high">
+<span class="">✓ No Account Required</span>
+<span class="">✓ Zero Telemetry Cookies</span>
+<span class="">✓ Localhost In-Memory Run</span>
+</div>
+</div>
+<!-- Button Action -->
+<div class="flex flex-col sm:flex-row items-center gap-space-sm w-full lg:w-auto shrink-0">
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-space-xs px-space-xl py-3 rounded bg-primary-container hover:bg-primary font-headline-sm text-body-md text-on-primary-container hover:text-on-primary transition-all shadow-md group" data-path="compare" href="#">
+<span class="">Compare Documents</span>
+<span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-space-xs px-space-lg py-3 rounded bg-surface-variant/10 hover:bg-surface-variant/20 text-inverse-on-surface border border-outline-variant/30 font-headline-sm text-body-md transition-all" data-path="history" href="#">
+<span class="">View Session Benchmarks</span>
+</a>
+</div>
+</div>
+</section>
+</div>
+<script>
+  // Clean client-side tab or path navigation trigger helper
+  document.querySelectorAll('a[data-path]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      // Allow shell or application router to capture target paths
+      const target = link.getAttribute('data-path');
+      console.log('TextTrace navigation requested to:', target);
+    });
+  });
+</script></main><footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 mt-auto"><div class="max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-xl"><div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-space-lg"><div class="md:col-span-2 space-y-space-sm"><div class="flex items-center gap-space-xs"><img alt="TextTrace Logo" class="h-6 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeO_h5ZBZqC5CoCso_x6wtgZ-20wao31kKxkYPMPo-bBFEiKy01LJboiK99ps3YiJM1MuHp8I-RHXvGXyJNm9KGe-pG1vedq7CaSdfHNM5n4YD0fiIe2Cj_bSxBkIPnhr1M6565_Og5LlEAQ20y5kXWH7Wr-E2Gr5AuP8HKaCXYWmlZC1ubdZirWd64yujt8SHV4kWzxVopTkZtqyjIas0S3kVIct_RWvU3WD73mdRgOUJjhmqiSGT"><span class="font-headline-sm text-headline-sm text-on-surface">TextTrace</span></div><p class="font-body-sm text-body-sm text-on-surface-variant max-w-md">Computational linguistic analysis workbench implementing multi-tiered string metrics, rolling hash algorithms, and token overlapping models for robust document similarity detection.</p><div class="pt-space-xs"><span class="font-label-sm text-label-sm text-secondary font-semibold">Rayat Bahra University · Department of Computer Science &amp; Engineering</span></div></div><div><h4 class="font-headline-sm text-body-sm text-on-surface uppercase tracking-wider mb-space-sm">Algorithmic Models</h4><ul class="space-y-space-xs font-label-md text-label-md text-on-surface-variant"><li class="">Rabin-Karp Rolling Hash</li><li class="">Token-Level N-Gram Overlap</li><li class="">Jaccard &amp; Cosine Metric</li><li class="">Levenshtein Distance Engine</li></ul></div><div><h4 class="font-headline-sm text-body-sm text-on-surface uppercase tracking-wider mb-space-sm">Academic Scope</h4><ul class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant"><li class="">Author: Harsh Garg (B.Tech CSE)</li><li class="">Author: Babishya (B.Tech CSE)</li><li class="">Instructor &amp; Evaluator Console</li><li class="">Privacy: Ephemeral In-Memory Diff</li></ul></div></div><div class="pt-space-md border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-space-sm"><p class="font-label-sm text-label-sm text-secondary">© 2025 TextTrace · Rayat Bahra University B.Tech Capstone Project. All rights reserved.</p><p class="font-label-sm text-label-sm text-secondary">Zero Data Retention Guarantee · Localhost Flask Environment</p></div></div></footer>
+
+</body></html>

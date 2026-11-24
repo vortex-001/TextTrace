@@ -1,0 +1,36 @@
+{
+  "scores": {
+    "overall": 49.61,
+    "word_overlap": 41.18,
+    "coverage_a": 53.57,
+    "coverage_b": 62.5
+  },
+  "stats": {
+    "words_a": 28,
+    "words_b": 24,
+    "unique_a": 26,
+    "unique_b": 22,
+    "common_words": 14,
+    "union_words": 34,
+    "passages_a": 1,
+    "passages_b": 1,
+    "longest_passage": 15,
+    "lcs_length": 15
+  },
+  "passages_a": [
+    {
+      "word_count": 15,
+      "start_char": 55,
+      "end_char": 126,
+      "text": "A hash map stores key value pairs so that a value can be found quickly."
+    }
+  ],
+  "passages_b": [
+    {
+      "word_count": 15,
+      "start_char": 35,
+      "end_char": 105,
+      "text": "A hash map stores key value pairs so that a value can be found quickly"
+    }
+  ]
+}

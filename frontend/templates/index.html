@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#f6f3ee">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>TextTrace - Algorithmic Document Similarity Checker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- Top Navigation / Header -->
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="brand-group">
+          <div class="brand-logo">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <div>
+            <div class="title-row">
+              <h1 class="brand-name">TextTrace</h1>
+              <span class="badge-academic">IAA Algorithms Project</span>
+            </div>
+            <p class="brand-desc">Compare two documents using hand-written Rabin-Karp, Merge Sort &amp; Jaccard Overlap.</p>
+          </div>
+        </div>
+
+        <div class="header-meta">
+          <button type="button" class="theme-toggle" id="theme-toggle-btn" aria-label="Toggle theme" title="Switch between Dark and Light mode">
+            <div class="theme-toggle-track">
+              <span class="icon-sun" title="Light Mode">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="5"></circle>
+                  <line x1="12" y1="1" x2="12" y2="3"></line>
+                  <line x1="12" y1="21" x2="12" y2="23"></line>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                  <line x1="1" y1="12" x2="3" y2="12"></line>
+                  <line x1="21" y1="12" x2="23" y2="12"></line>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+              </span>
+              <span class="icon-moon" title="Dark Mode">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+              </span>
+              <span class="toggle-thumb"></span>
+            </div>
+          </button>
+          <div class="author-tag">
+            <span class="uni-name">Rayat Bahra University</span>
+            <span class="student-names">Harsh Garg</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- Error Banner -->
+      <div id="error-box" class="error-box" hidden></div>
+
+      <!-- Input Workbench -->
+      <section class="workbench-section">
+        <div class="workbench-grid">
+          <!-- Document A Card -->
+          <div class="doc-card" id="panel-a">
+            <div class="doc-card-header">
+              <div class="doc-badge-title">
+                <span class="doc-pill doc-pill-a">A</span>
+                <label for="textarea-a" class="doc-title">Document A (Reference)</label>
+              </div>
+              <div class="doc-stats-right">
+                <span id="count-a" class="stat-counter">0 words &middot; 0 chars</span>
+              </div>
+            </div>
+
+            <!-- Card Sub-bar: Modes & Status -->
+            <div class="doc-card-toolbar">
+              <div class="mode-tabs">
+                <button type="button" class="tab-btn active" id="tab-a-edit">Editor</button>
+                <button type="button" class="tab-btn" id="tab-a-drop">Upload File</button>
+              </div>
+              <div id="status-a" class="status-pill ready">Ready</div>
+            </div>
+
+            <!-- Textarea container -->
+            <div class="editor-pane" id="pane-a-text">
+              <textarea id="textarea-a" class="doc-textarea" placeholder="Paste or type Document A text here... (or switch to Upload File)"></textarea>
+            </div>
+
+            <!-- Upload Dropzone View (toggled or persistent) -->
+            <div class="dropzone-pane" id="pane-a-drop" hidden>
+              <div class="dropzone-box" id="drop-box-a">
+                <div class="dropzone-icon">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                  </svg>
+                </div>
+                <div class="dropzone-text">Drag &amp; drop document or image here</div>
+                <div class="dropzone-sub">Supported formats: Plain Text, Word (.docx), PDF, or Images (OCR)</div>
+                <input type="file" id="file-a" accept=".txt,.pdf,.docx,.doc,image/*" hidden>
+                <button type="button" id="load-a-btn" class="btn btn-browse">Browse Document / File</button>
+                <div class="format-chips">
+                  <span class="chip">.TXT</span>
+                  <span class="chip">.DOCX</span>
+                  <span class="chip">.PDF</span>
+                  <span class="chip">OCR Images</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="doc-card-footer">
+              <button type="button" id="clear-a-btn" class="btn-text-action">Clear Document A</button>
+              <span class="footer-hint">UTF-8 &middot; Max 100,000 characters</span>
+            </div>
+          </div>
+
+          <!-- Document B Card -->
+          <div class="doc-card" id="panel-b">
+            <div class="doc-card-header">
+              <div class="doc-badge-title">
+                <span class="doc-pill doc-pill-b">B</span>
+                <label for="textarea-b" class="doc-title">Document B (Comparison)</label>
+              </div>
+              <div class="doc-stats-right">
+                <span id="count-b" class="stat-counter">0 words &middot; 0 chars</span>
+              </div>
+            </div>
+
+            <!-- Card Sub-bar: Modes & Status -->
+            <div class="doc-card-toolbar">
+              <div class="mode-tabs">
+                <button type="button" class="tab-btn active" id="tab-b-edit">Editor</button>
+                <button type="button" class="tab-btn" id="tab-b-drop">Upload File</button>
+              </div>
+              <div id="status-b" class="status-pill ready">Ready</div>
+            </div>
+
+            <!-- Textarea container -->
+            <div class="editor-pane" id="pane-b-text">
+              <textarea id="textarea-b" class="doc-textarea" placeholder="Paste or type Document B text here... (or switch to Upload File)"></textarea>
+            </div>
+
+            <!-- Upload Dropzone View (toggled or persistent) -->
+            <div class="dropzone-pane" id="pane-b-drop" hidden>
+              <div class="dropzone-box" id="drop-box-b">
+                <div class="dropzone-icon">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                  </svg>
+                </div>
+                <div class="dropzone-text">Drag &amp; drop document or image here</div>
+                <div class="dropzone-sub">Supported formats: Plain Text, Word (.docx), PDF, or Images (OCR)</div>
+                <input type="file" id="file-b" accept=".txt,.pdf,.docx,.doc,image/*" hidden>
+                <button type="button" id="load-b-btn" class="btn btn-browse">Browse Document / File</button>
+                <div class="format-chips">
+                  <span class="chip">.TXT</span>
+                  <span class="chip">.DOCX</span>
+                  <span class="chip">.PDF</span>
+                  <span class="chip">OCR Images</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="doc-card-footer">
+              <button type="button" id="clear-b-btn" class="btn-text-action">Clear Document B</button>
+              <span class="footer-hint">UTF-8 &middot; Max 100,000 characters</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls Toolbar -->
+        <div class="controls-card">
+          <div class="k-control-group">
+            <label for="k-input" class="control-label">Phrase Match Length (k):</label>
+            <div class="k-input-wrapper">
+              <input type="number" id="k-input" class="k-input" value="5" min="2" max="10">
+              <span class="k-unit">words</span>
+            </div>
+            <div class="k-presets">
+              <button type="button" class="preset-btn" data-k="3">k = 3 (Sensitive)</button>
+              <button type="button" class="preset-btn active" data-k="5">k = 5 (Standard)</button>
+              <button type="button" class="preset-btn" data-k="8">k = 8 (Long phrases)</button>
+            </div>
+          </div>
+
+          <div class="action-buttons-group">
+            <button type="button" id="algo-viz-toggle" class="btn btn-secondary" title="View interactive DSA visualizer and algorithm analysis">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              Algorithm Visualizer
+            </button>
+            <button type="button" id="sample-btn" class="btn btn-secondary">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+              </svg>
+              Load Sample
+            </button>
+            <button type="button" id="clear-btn" class="btn btn-secondary">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+              Clear All
+            </button>
+            <button type="button" id="compare-btn" class="btn btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              Compare Documents
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Algorithm Visualizer (IAA - Analysis of Algorithms) -->
+      <section id="algo-viz-section" class="algo-viz-section">
+        <div class="viz-header">
+          <div class="viz-header-title">
+            <span class="viz-pill">IAA Analysis</span>
+            <h2 class="viz-heading">Algorithm Visualizer &amp; Working</h2>
+            <p class="viz-sub">Interactive simulation of Rabin-Karp Rolling Hash, Divide-and-Conquer Merge Sort, and Complexity Analysis.</p>
+          </div>
+          <div class="viz-tabs">
+            <button type="button" class="viz-tab-btn active" data-tab="tab-rabinkarp">1. Rabin-Karp Rolling Hash</button>
+            <button type="button" class="viz-tab-btn" data-tab="tab-mergesort">2. Merge Sort</button>
+            <button type="button" class="viz-tab-btn" data-tab="tab-analysis">3. Complexity Analysis</button>
+          </div>
+        </div>
+
+        <!-- Tab 1: Rabin-Karp Visualizer -->
+        <div class="viz-tab-content active" id="tab-rabinkarp">
+          <div class="sim-card">
+            <div class="sim-header">
+              <div class="sim-meta">
+                <span class="sim-tag">Document B Sliding Window (k = 5)</span>
+                <span class="sim-formula">Base B = 131 &middot; Modulo M = 1,000,000,007</span>
+              </div>
+              <div class="sim-controls">
+                <button type="button" id="sim-play-btn" class="btn-sim primary">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <span>Play</span>
+                </button>
+                <button type="button" id="sim-step-btn" class="btn-sim">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  <span>Step</span>
+                </button>
+                <button type="button" id="sim-reset-btn" class="btn-sim">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+                  <span>Reset</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Target from Document A -->
+            <div class="sim-target-box">
+              <span class="target-label">Document A Reference Phrase in HashMap:</span>
+              <span class="target-phrase">"a hash map stores key"</span>
+              <span class="target-hash">Target Hash: <strong id="sim-target-val">185,578,863</strong></span>
+            </div>
+
+            <!-- Stream of Tokens with sliding window -->
+            <div class="sim-stream-container">
+              <div class="sim-stream" id="sim-stream">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Live Calculation Readout -->
+            <div class="sim-math-card" id="sim-math-card">
+              <div class="math-col">
+                <span class="math-label">Current Window (k=5):</span>
+                <code class="math-val" id="sim-window-text">--</code>
+              </div>
+              <div class="math-col">
+                <span class="math-label">Rolling Hash Value (O(1)):</span>
+                <code class="math-val" id="sim-hash-val">--</code>
+              </div>
+              <div class="math-col">
+                <span class="math-label">HashMap Verification:</span>
+                <span class="math-status" id="sim-status">Ready</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Merge Sort Visualizer -->
+        <div class="viz-tab-content" id="tab-mergesort" hidden>
+          <div class="sim-card">
+            <div class="sim-header">
+              <div class="sim-meta">
+                <span class="sim-tag">Divide &amp; Conquer Passage Sorter</span>
+                <span class="sim-formula">Recurrence: T(n) = 2T(n/2) + O(n) &rArr; O(P log P)</span>
+              </div>
+              <button type="button" id="sim-sort-btn" class="btn-sim primary">Animate Merge Sort</button>
+            </div>
+
+            <div class="sort-visual-container" id="sort-visual-container">
+              <!-- Visual tree injected via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Asymptotic Analysis (IAA Viva Guide) -->
+        <div class="viz-tab-content" id="tab-analysis" hidden>
+          <div class="analysis-table-responsive">
+            <table class="analysis-table">
+              <thead>
+                <tr>
+                  <th>Algorithm</th>
+                  <th>Task in TextTrace</th>
+                  <th>Best Case</th>
+                  <th>Average Case</th>
+                  <th>Worst Case</th>
+                  <th>Space</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Rabin-Karp Rolling Hash</strong></td>
+                  <td>k-gram substring matching</td>
+                  <td><code>O(N + M)</code></td>
+                  <td><code>O(N + M)</code></td>
+                  <td><code>O(N &times; M)</code> (all collisions)</td>
+                  <td><code>O(N)</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Merge Sort</strong></td>
+                  <td>Passage ranking (longest first)</td>
+                  <td><code>O(P log P)</code></td>
+                  <td><code>O(P log P)</code></td>
+                  <td><code>O(P log P)</code> (stable)</td>
+                  <td><code>O(P)</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Jaccard HashSet</strong></td>
+                  <td>Unique vocabulary overlap</td>
+                  <td><code>O(N + M)</code></td>
+                  <td><code>O(N + M)</code></td>
+                  <td><code>O(N + M)</code></td>
+                  <td><code>O(N + M)</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Dynamic Programming LCS</strong></td>
+                  <td>Word sequence alignment</td>
+                  <td><code>O(N &times; M)</code></td>
+                  <td><code>O(N &times; M)</code></td>
+                  <td><code>O(N &times; M)</code></td>
+                  <td><code>O(N &times; M)</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results Section -->
+      <section id="results" class="results-section" hidden>
+        <div class="results-header">
+          <div class="results-header-text">
+            <h2 class="section-heading">Comparison Analysis</h2>
+            <p class="section-sub">Algorithmic metrics computed via Rabin-Karp Rolling Hash and Merge Sort.</p>
+          </div>
+          <div class="results-meta-badge">
+            Status: <strong class="text-success">Comparison Complete</strong>
+          </div>
+        </div>
+
+        <!-- Hero Metric & Score Cards Grid -->
+        <div class="score-cards-grid">
+          <!-- Overall Similarity Card with Radial Gauge -->
+          <div class="score-card hero-card">
+            <div class="card-top-label">Overall Similarity</div>
+            <div class="radial-container">
+              <svg class="radial-gauge" viewBox="0 0 100 100">
+                <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
+                <circle class="gauge-fill" id="donut-fill" cx="50" cy="50" r="40"></circle>
+              </svg>
+              <div class="radial-center">
+                <div class="hero-score-val" id="score-overall">--%</div>
+                <div class="hero-score-sub">Total Match</div>
+              </div>
+            </div>
+            <div class="score-desc">&frac12; (Word Overlap + Mean Phrase Coverage)</div>
+          </div>
+
+          <!-- Word Overlap Card -->
+          <div class="score-card">
+            <div class="card-top-label">Word Overlap</div>
+            <div class="metric-score-val" id="score-overlap">--%</div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="meter-overlap" style="width: 0%"></div>
+            </div>
+            <div class="score-desc">Jaccard index: |A &cap; B| / |A &cup; B|</div>
+          </div>
+
+          <!-- Doc A Coverage Card -->
+          <div class="score-card">
+            <div class="card-top-label">Coverage (Document A)</div>
+            <div class="metric-score-val" id="score-cov-a">--%</div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="meter-cov-a" style="width: 0%"></div>
+            </div>
+            <div class="score-desc">Doc A words in matching phrases &ge; k</div>
+          </div>
+
+          <!-- Doc B Coverage Card -->
+          <div class="score-card">
+            <div class="card-top-label">Coverage (Document B)</div>
+            <div class="metric-score-val" id="score-cov-b">--%</div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="meter-cov-b" style="width: 0%"></div>
+            </div>
+            <div class="score-desc">Doc B words in matching phrases &ge; k</div>
+          </div>
+        </div>
+
+        <!-- Charts & Graphs Section -->
+        <div class="charts-section">
+          <div class="charts-grid">
+            <!-- Chart 1: Vocabulary Breakdown Donut/Pie -->
+            <div class="chart-card">
+              <div class="chart-header">
+                <h3 class="chart-title">Vocabulary Distribution (Unique vs Shared)</h3>
+                <span class="chart-sub">HashSet Analysis</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="vocab-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 2: Corpus Metrics Bar Chart -->
+            <div class="chart-card">
+              <div class="chart-header">
+                <h3 class="chart-title">Corpus Comparison Metrics</h3>
+                <span class="chart-sub">Document A vs Document B</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="metrics-chart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Statistics Table -->
+        <div class="stats-panel">
+          <h3 class="panel-title">Detailed Document Statistics</h3>
+          <div class="table-responsive">
+            <table class="stats-table">
+              <thead>
+                <tr>
+                  <th>Metric</th>
+                  <th>Document A</th>
+                  <th>Document B</th>
+                </tr>
+              </thead>
+              <tbody id="stats-body">
+                <tr>
+                  <td>Total words</td>
+                  <td>--</td>
+                  <td>--</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Side-by-Side Highlighted Comparison -->
+        <div class="inspection-panel">
+          <div class="inspection-header">
+            <div>
+              <h3 class="panel-title">Side-by-Side Passage Inspector</h3>
+              <p class="panel-sub">Continuous shared phrases of length &ge; k are highlighted in warm amber.</p>
+            </div>
+            <div class="legend-group">
+              <span class="legend-indicator"></span>
+              <span class="legend-label">Matching Phrase</span>
+            </div>
+          </div>
+
+          <div class="inspection-views">
+            <div class="inspect-column">
+              <div class="inspect-col-header">
+                <span class="doc-pill doc-pill-a">A</span>
+                <h4>Document A Text</h4>
+              </div>
+              <div id="doc-a-view" class="doc-view">--</div>
+            </div>
+
+            <div class="inspect-column">
+              <div class="inspect-col-header">
+                <span class="doc-pill doc-pill-b">B</span>
+                <h4>Document B Text</h4>
+              </div>
+              <div id="doc-b-view" class="doc-view">--</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Matched Passages List (Merge Sort) -->
+        <div class="passages-panel">
+          <div class="passages-header">
+            <div>
+              <h3 class="panel-title">Matched Passages</h3>
+              <p class="panel-sub">Ranked in descending order of length using hand-written Merge Sort.</p>
+            </div>
+          </div>
+          <div id="passages-list" class="passages-list">--</div>
+        </div>
+
+        <!-- Viva & Algorithm Notes -->
+        <div class="viva-panel">
+          <h3 class="viva-title">Algorithm Reference for Viva</h3>
+          <div class="viva-grid">
+            <div class="viva-card">
+              <div class="viva-topic">1. Rabin-Karp Rolling Hash</div>
+              <p>Word hashes use multiplier 31. Sliding window of k words uses base B = 131 and prime M = 1,000,000,007. Sliding update: <code>h_new = ((h_old - leading) * B + incoming) % M</code>. Time: O(N + M) average.</p>
+            </div>
+            <div class="viva-card">
+              <div class="viva-topic">2. Merge Sort</div>
+              <p>Passages are sorted longest first using custom stable recursive merge sort without built-in <code>sorted()</code>. Time complexity: O(P log P).</p>
+            </div>
+            <div class="viva-card">
+              <div class="viva-topic">3. HashMap &amp; HashSet</div>
+              <p>Document vocabulary frequency is mapped using Python dict (HashMap) and unique words in set (HashSet) for O(1) average lookups.</p>
+            </div>
+            <div class="viva-card">
+              <div class="viva-topic">4. Longest Common Subsequence</div>
+              <p>Dynamic programming matrix computes exact word-level LCS order if documents have &le; 2,000 words. Complexity: O(N &times; M) time and space.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-inner">
+        <p class="footer-notice">
+          <strong>Notice:</strong> TextTrace detects exact word sequences using algorithmic hashing. Quotations and common terminology are matched as well. A high score indicates textual similarity, not necessarily intentional plagiarism.
+        </p>
+        <div class="footer-bottom">
+          <span>TextTrace &middot; 3rd-Year B.Tech IAA Project &middot; Department of Computer Science &amp; Engineering</span>
+          <span>Rayat Bahra University &middot; 2026&ndash;27</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</body>
+</html>

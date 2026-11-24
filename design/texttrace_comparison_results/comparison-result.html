@@ -1,0 +1,548 @@
+<!DOCTYPE html><html class="light" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>TextTrace — Document Similarity Checker</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "outline": "#6c7a71", "primary": "#006c49", "tertiary": "#006c4c", "on-secondary-fixed-variant": "#37485d", "on-surface": "#0f1c2b", "secondary": "#4f6075", "on-primary-container": "#00422b", "surface-variant": "#d6e4f8", "surface-container-lowest": "#ffffff", "on-tertiary-container": "#00422d", "on-error": "#ffffff", "on-primary-fixed": "#002113", "surface-container-highest": "#d6e4f8", "primary-fixed-dim": "#4edea3", "on-primary": "#ffffff", "primary-fixed": "#6ffbbe", "outline-variant": "#bbcabf", "inverse-on-surface": "#eaf1ff", "on-primary-fixed-variant": "#005236", "surface-tint": "#006c49", "on-tertiary-fixed-variant": "#005139", "secondary-container": "#d2e4fe", "on-tertiary": "#ffffff", "surface-container": "#e5efff", "on-secondary-container": "#55667c", "on-secondary": "#ffffff", "error-container": "#ffdad6", "on-error-container": "#93000a", "background": "#f8f9ff", "secondary-fixed": "#d2e4fe", "error": "#ba1a1a", "surface": "#f8f9ff", "inverse-primary": "#4edea3", "tertiary-fixed": "#94f6ca", "surface-container-high": "#dce9fe", "on-secondary-fixed": "#0a1d2f", "secondary-fixed-dim": "#b6c8e1", "surface-dim": "#cedbef", "surface-container-low": "#eef4ff", "on-background": "#0f1c2b", "surface-bright": "#f8f9ff", "tertiary-container": "#52b48c", "on-tertiary-fixed": "#002115", "on-surface-variant": "#3c4a42", "tertiary-fixed-dim": "#78d9af", "inverse-surface": "#253141", "primary-container": "#10b981" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-lg": "1.5rem", "gutter": "1.25rem", "space-md": "1rem", "space-xl": "2.25rem", "margin-mobile": "1rem", "space-xs": "0.25rem", "margin": "2rem", "space-sm": "0.5rem", "gutter-mobile": "0.75rem" }, "fontFamily": { "body-md": ["Inter"], "code-inline": ["JetBrains Mono"], "headline-sm": ["Inter"], "body-sm": ["Inter"], "label-sm": ["JetBrains Mono"], "headline-md": ["Inter"], "body-lg": ["Inter"], "headline-xl": ["Inter"], "label-md": ["JetBrains Mono"], "headline-lg": ["Inter"], "headline-xl-mobile": ["Inter"] }, "fontSize": { "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "code-inline": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "label-sm": ["11px", { "lineHeight": "16px", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "headline-xl": ["32px", { "lineHeight": "40px", "fontWeight": "700" }], "label-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "headline-xl-mobile": ["26px", { "lineHeight": "34px", "fontWeight": "700" }] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-inverse-surface border-b border-outline-variant/20"><div class="max-w-7xl mx-auto px-margin-mobile md:px-margin h-16 flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md"><a class="flex items-center gap-space-sm" data-path="home" href="#"><img alt="TextTrace Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeO_h5ZBZqC5CoCso_x6wtgZ-20wao31kKxkYPMPo-bBFEiKy01LJboiK99ps3YiJM1MuHp8I-RHXvGXyJNm9KGe-pG1vedq7CaSdfHNM5n4YD0fiIe2Cj_bSxBkIPnhr1M6565_Og5LlEAQ20y5kXWH7Wr-E2Gr5AuP8HKaCXYWmlZC1ubdZirWd64yujt8SHV4kWzxVopTkZtqyjIas0S3kVIct_RWvU3WD73mdRgOUJjhmqiSGT"><span class="font-headline-sm text-headline-sm text-inverse-on-surface font-bold tracking-tight">TextTrace</span></a><span class="hidden lg:inline-flex items-center px-space-xs py-0.5 rounded-lg bg-surface-variant/20 border border-outline-variant/30 text-inverse-on-surface font-label-sm text-label-sm">DSA Project · RBU</span></div><nav class="hidden md:flex items-center gap-space-xs" data-active-classes="bg-surface-variant/20 text-inverse-on-surface font-headline-sm"><a class="px-space-sm py-1.5 rounded-lg font-body-sm text-body-sm text-surface-variant hover:text-inverse-on-surface hover:bg-surface-variant/10 transition-colors" data-path="home" href="#">Home</a><a class="px-space-sm py-1.5 rounded-lg font-body-sm text-body-sm text-surface-variant hover:text-inverse-on-surface hover:bg-surface-variant/10 transition-colors" data-path="compare" href="#">Compare</a><a aria-current="page" class="px-space-sm py-1.5 rounded-lg transition-colors bg-surface-variant/20 text-inverse-on-surface font-headline-sm" data-path="results" href="#">Results</a><a class="px-space-sm py-1.5 rounded-lg font-body-sm text-body-sm text-surface-variant hover:text-inverse-on-surface hover:bg-surface-variant/10 transition-colors" data-path="history" href="#">History</a><a class="px-space-sm py-1.5 rounded-lg font-body-sm text-body-sm text-surface-variant hover:text-inverse-on-surface hover:bg-surface-variant/10 transition-colors" data-path="how-it-works" href="#">How It Works</a></nav><div class="flex items-center gap-space-md"><div class="hidden sm:flex items-center gap-space-xs px-space-xs py-1 rounded bg-secondary-container/20 border border-secondary-container/30"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span class="font-label-sm text-label-sm text-surface-container-high">Active DSA: Rabin-Karp Rolling Hash</span></div><a class="hidden sm:inline-flex items-center justify-center px-space-md py-1.5 rounded bg-primary-container hover:bg-primary font-headline-sm text-body-sm text-on-primary-container hover:text-on-primary transition-colors shadow-sm" data-path="compare" href="#">Compare Documents</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-16rem)]"><div class="flex flex-col w-full">
+<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-lg w-full space-y-space-lg">
+<!-- 1. Results Header & Action Toolbar -->
+<header class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md bg-surface-container-lowest p-space-md rounded-lg shadow-sm">
+<div class="space-y-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="px-space-xs py-0.5 rounded bg-surface-container text-secondary font-label-sm text-label-sm uppercase tracking-wider">Analysis Engine v2.4</span>
+<span class="px-space-xs py-0.5 rounded bg-primary/10 text-primary font-label-sm text-label-sm font-semibold">Status: Complete • 18.4ms</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">Comparison Results</h1>
+<p class="font-body-sm text-body-sm text-secondary">Review algorithmic token overlap metrics, rolling-hash substrings, and cross-document alignment.</p>
+</div>
+<div class="flex flex-wrap items-center gap-space-xs">
+<a class="inline-flex items-center gap-space-xs px-space-sm py-2 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-headline-sm text-body-sm transition-colors" data-path="compare" href="#">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span class="">Back to Compare</span>
+</a>
+<a class="inline-flex items-center gap-space-xs px-space-sm py-2 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-headline-sm text-body-sm transition-colors" data-path="compare" href="#">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span class="">New Comparison</span>
+</a>
+<button class="inline-flex items-center gap-space-xs px-space-md py-2 rounded bg-primary-container hover:bg-primary text-on-primary-container hover:text-on-primary font-headline-sm text-body-sm shadow-sm transition-colors" id="btn-download-report">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span class="">Download Report</span>
+</button>
+</div>
+</header>
+<!-- 2. Top Summary Section: Score + 4 Stat Cards -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-stretch">
+<!-- Left: Prominent Restrained Score Card (5 Cols) -->
+<div class="lg:col-span-5 bg-surface-container-lowest p-space-lg rounded-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-start justify-between mb-space-sm">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider font-semibold">Similarity Metric</span>
+<span class="inline-flex items-center px-space-xs py-0.5 rounded bg-primary/15 text-primary font-label-sm text-label-sm font-bold">Moderate Overlap</span>
+</div>
+<div class="flex items-center gap-space-lg my-space-md">
+<!-- Progress Ring Visualization -->
+<div class="relative w-28 h-28 flex-shrink-0">
+<svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+<circle class="text-surface-container" cx="50" cy="50" fill="none" r="42" stroke="currentColor" stroke-width="9"></circle>
+<circle class="text-primary-container" cx="50" cy="50" fill="none" r="42" stroke="currentColor" stroke-dasharray="263.89" stroke-dashoffset="150.94" stroke-linecap="round" stroke-width="9"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-headline-xl text-headline-xl text-on-surface font-bold leading-none">42.8%</span>
+<span class="font-label-sm text-label-sm text-secondary mt-1">Dice-Sørensen</span>
+</div>
+</div>
+<div class="space-y-space-xs">
+<div class="font-headline-sm text-headline-sm text-on-surface font-bold">Token-Overlap Index</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Measures normalized n-gram token occurrences intersecting both document spaces independent of sequence reordering.</p>
+<div class="pt-1">
+<span class="inline-block px-space-xs py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-on-surface">Formula: S = (2 × C / (A + B)) × 100</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Collapsible Formula Computation -->
+<div class="mt-space-md pt-space-md bg-surface-container-low p-space-sm rounded">
+<button class="w-full flex items-center justify-between text-left font-body-sm text-body-sm text-primary font-medium focus:outline-none" id="toggle-formula">
+<span class="flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[16px]">calculate</span>
+              How is this calculated?
+            </span>
+<span class="material-symbols-outlined text-[18px] transition-transform" id="formula-icon">expand_more</span>
+</button>
+<div class="hidden mt-space-sm space-y-space-xs font-label-sm text-label-sm text-secondary" id="formula-breakdown">
+<div class="flex justify-between py-0.5"><span class="text-on-surface font-medium">A (Tokens in Doc A):</span><span class="font-mono text-on-surface">248 tokens</span></div>
+<div class="flex justify-between py-0.5"><span class="text-on-surface font-medium">B (Tokens in Doc B):</span><span class="font-mono text-on-surface">286 tokens</span></div>
+<div class="flex justify-between py-0.5"><span class="text-on-surface font-medium">C (Shared Token Occurrences):</span><span class="font-mono text-on-surface">114 matches</span></div>
+<div class="pt-space-xs text-secondary italic font-body-sm">Calculation: (2 × 114 / (248 + 286)) × 100 = 42.69% ≈ 42.8%</div>
+</div>
+</div>
+</div>
+<!-- Right: Four Compact Metric Stat Cards (7 Cols) -->
+<div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-gutter">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Source Corpus</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">description</span>
+</div>
+<div class="my-space-sm">
+<div class="font-headline-xl text-headline-xl font-bold text-on-surface">248</div>
+<div class="font-headline-sm text-body-sm text-on-surface font-medium">Words in Document A</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs bg-surface-container-low px-space-xs py-1 rounded">
+<span class="font-label-sm text-label-sm text-secondary">Normalized Tokens</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">214 tokens</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Target Corpus</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">article</span>
+</div>
+<div class="my-space-sm">
+<div class="font-headline-xl text-headline-xl font-bold text-on-surface">286</div>
+<div class="font-headline-sm text-body-sm text-on-surface font-medium">Words in Document B</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs bg-surface-container-low px-space-xs py-1 rounded">
+<span class="font-label-sm text-label-sm text-secondary">Normalized Tokens</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">251 tokens</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Token Frequency</span>
+<span class="material-symbols-outlined text-primary text-[20px]">join_inner</span>
+</div>
+<div class="my-space-sm">
+<div class="font-headline-xl text-headline-xl font-bold text-primary">114</div>
+<div class="font-headline-sm text-body-sm text-on-surface font-medium">Shared Occurrences</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs bg-surface-container-low px-space-xs py-1 rounded">
+<span class="font-label-sm text-label-sm text-secondary">Distinct Vocab Stems</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">46 roots</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Sub-String Extractor</span>
+<span class="material-symbols-outlined text-tertiary text-[20px]">rule</span>
+</div>
+<div class="my-space-sm">
+<div class="font-headline-xl text-headline-xl font-bold text-on-surface">4 Passages</div>
+<div class="font-headline-sm text-body-sm text-on-surface font-medium">Rabin-Karp Rolling Hash</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs bg-surface-container-low px-space-xs py-1 rounded">
+<span class="font-label-sm text-label-sm text-secondary">Detection Window (k)</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">≥ 4 consecutive words</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Side-by-Side Reading Comparison Panels -->
+<section class="bg-surface-container-lowest rounded-lg shadow-sm overflow-hidden flex flex-col">
+<!-- Top Legend Bar with Sync Toggle -->
+<div class="p-space-md bg-surface-container-low flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm">
+<div class="flex flex-wrap items-center gap-space-xs font-label-sm text-label-sm">
+<span class="font-semibold text-secondary uppercase tracking-wider mr-2">Highlight Taxonomy:</span>
+<span class="inline-flex items-center gap-1.5 px-space-xs py-1 rounded bg-[#D9FBE8] text-on-surface font-medium shadow-sm">
+<span class="w-2.5 h-2.5 rounded-sm bg-[#10B981]"></span>
+<span class="">Exact Phrase Match (Rabin-Karp k ≥ 4)</span>
+</span>
+<span class="inline-flex items-center gap-1.5 px-space-xs py-1 rounded bg-[#FFF2C6] text-on-surface font-medium shadow-sm">
+<span class="w-2.5 h-2.5 rounded-sm bg-[#E5B800]"></span>
+<span class="">High Token Co-occurrence</span>
+</span>
+<span class="inline-flex items-center gap-1.5 px-space-xs py-1 rounded bg-surface-container text-secondary">
+<span class="w-2.5 h-2.5 rounded-sm bg-secondary"></span>
+<span class="">Unique Independent Passage</span>
+</span>
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container px-space-sm py-1 rounded">
+<label class="font-label-sm text-label-sm text-on-surface font-semibold cursor-pointer select-none" for="sync-scroll-toggle">Sync Scrolling</label>
+<input checked="" class="w-4 h-4 rounded text-primary focus:ring-primary accent-primary cursor-pointer" id="sync-scroll-toggle" type="checkbox">
+</div>
+</div>
+<!-- Reading Containers Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-surface-container">
+<!-- Document A Pane -->
+<div class="flex flex-col h-[520px]">
+<div class="px-space-md py-space-sm bg-surface-container-lowest flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">Document A</span>
+<span class="font-label-sm text-label-sm text-secondary bg-surface-container px-space-xs py-0.5 rounded">Source Paper (IEEE Tran. 2023)</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">248 words • UTF-8</span>
+</div>
+<div class="flex-1 overflow-y-auto p-space-md space-y-space-md text-on-surface font-body-md text-body-md leading-relaxed select-text bg-surface-container-lowest" id="doc-panel-a">
+<p class="">
+              In distributed transactional systems, achieving consensus while preserving low tail latency demands adaptive quorum configurations.
+              <mark class="bg-[#D9FBE8] text-on-surface px-1 py-0.5 rounded font-normal shadow-sm" id="match-a-1" title="Exact Match #1 (14 words)">The distributed consensus protocol guarantees strict serializability across partition-tolerant replica nodes under asynchronous networking conditions</mark>,
+              mitigating the traditional communication overhead observed in legacy multi-Paxos clusters.
+            </p>
+<p class="">
+              When evaluating fault-recovery states, write operations are acknowledged only after quorum affirmation.
+              <mark class="bg-[#D9FBE8] text-on-surface px-1 py-0.5 rounded font-normal shadow-sm" id="match-a-2" title="Exact Match #2 (9 words)">By decoupling state machine replication from deterministic log compaction routines</mark>,
+              the proposed framework significantly scales overall throughput.
+              <mark class="bg-[#FFF2C6] text-on-surface px-1 py-0.5 rounded font-normal shadow-sm">Furthermore, adaptive leader leases diminish spurious election churn</mark>
+              during transient WAN partitioning events.
+            </p>
+<p class="">
+              Performance telemetry confirms that
+              <mark class="bg-[#D9FBE8] text-on-surface px-1 py-0.5 rounded font-normal shadow-sm" id="match-a-3" title="Exact Match #3 (6 words)">hash buckets prevent hash table collision cascades</mark>
+              when indexing persistent key-value segments. This mechanism demonstrates substantial robustness compared to randomized linear probing heuristics.
+            </p>
+<p class="">
+              Finally, we examine memory footprint optimizations.
+              <mark class="bg-[#D9FBE8] text-on-surface px-1 py-0.5 rounded font-normal shadow-sm" id="match-a-4" title="Exact Match #4 (4 words)">consistent hashing ring topologies</mark>
+              distribute incoming client requests with deterministic fairness across all active shards without introducing hotspot latency penalties.
+            </p>
+<p class="text-secondary font-body-sm">
+              [Section 4.3 Evaluation Benchmarks] Systematic load testing under 100,000 synthetic operations demonstrated sub-millisecond execution bounds during peak synthetic ingestion.
+            </p>
+</div>
+</div>
+<!-- Document B Pane -->
+<div class="flex flex-col h-[520px]">
+<div class="px-space-md py-space-sm bg-surface-container-lowest flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">Document B</span>
+<span class="font-label-sm text-label-sm text-secondary bg-surface-container px-space-xs py-0.5 rounded">Submitted Manuscript / Review</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">286 words • UTF-8</span>
+</div>
+<div class="flex-1 overflow-y-auto p-space-md space-y-space-md text-on-surface font-body-md text-body-md leading-relaxed select-text bg-surface-container-lowest" id="doc-panel-b">
+<p class="">
+              Our survey analyzes recent advances in fault-tolerant distributed storage systems. Specifically,
+              <mark class="bg-[#D9FBE8] text-on-surface px-1 py-0.5 rounded font-normal shadow-sm" id="match-b-1" title="Exact Match #1 (14 words)">The distributed consensus protocol guarantees strict serializability across partition-tolerant replica nodes under asynchronous networking conditions</mark>,
+              which provides a foundational guarantee for modern microservice architectures.
+            </p>
+<p class="">
+              In our review of modern logging architectures, investigators observed that
+              <mark class="bg-[#D9FBE8] text-on-surface px-1 py-0.5 rounded font-normal shadow-sm" id="match-b-2" title="Exact Match #2 (9 words)">by decoupling state machine replication from deterministic log compaction routines</mark>,
+              computational bottlenecks are alleviated during heavy transaction spikes.
+              <mark class="bg-[#FFF2C6] text-on-surface px-1 py-0.5 rounded font-normal shadow-sm">Similarly, adaptive lease agreements alleviate unneeded leader election overhead</mark>
+              across wide-area deployments.
+            </p>
+<p class="">
+              In storage engine benchmarks, data records demonstrate that
+              <mark class="bg-[#D9FBE8] text-on-surface px-1 py-0.5 rounded font-normal shadow-sm" id="match-b-3" title="Exact Match #3 (6 words)">hash buckets prevent hash table collision cascades</mark>,
+              ensuring constant time O(1) amortized retrieval even in saturated memory environments.
+            </p>
+<p class="">
+              To guarantee load balance, using
+              <mark class="bg-[#D9FBE8] text-on-surface px-1 py-0.5 rounded font-normal shadow-sm" id="match-b-4" title="Exact Match #4 (4 words)">consistent hashing ring topologies</mark>
+              remains the standard practice for cloud native distributed key-value microclusters.
+            </p>
+<p class="text-secondary font-body-sm">
+              [Methodological Synthesis] These structural commonalities indicate an emerging architectural convergence across both academic research literature and industrial enterprise middleware implementations.
+            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Matching Passages Table -->
+<section class="bg-surface-container-lowest rounded-lg shadow-sm overflow-hidden space-y-space-sm p-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-space-sm border-b border-surface-container">
+<div class="flex items-center gap-space-sm">
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">Detected Matching Passages</h2>
+<span class="px-space-xs py-0.5 rounded bg-primary/10 text-primary font-label-sm text-label-sm font-semibold">4 exact matches found</span>
+</div>
+<div class="flex items-center gap-space-xs font-label-sm text-label-sm text-secondary">
+<span class="material-symbols-outlined text-[16px]">sort</span>
+<span class="">Sorted by descending phrase length (Tokens)</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container font-label-sm text-label-sm text-secondary uppercase tracking-wider">
+<th class="py-space-sm px-space-md w-12 text-center">No.</th>
+<th class="py-space-sm px-space-md">Identified Text Fragment</th>
+<th class="py-space-sm px-space-md w-32 text-right">Length</th>
+<th class="py-space-sm px-space-md w-44">Doc A Location</th>
+<th class="py-space-sm px-space-md w-44">Doc B Location</th>
+<th class="py-space-sm px-space-md w-32 text-center">Inspect</th>
+</tr>
+</thead>
+<tbody class="font-body-sm text-body-sm divide-y divide-surface-container">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-space-sm px-space-md text-center font-mono font-semibold text-secondary">01</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-start gap-space-xs">
+<span class="w-2 h-2 mt-1.5 rounded-full bg-primary-container flex-shrink-0"></span>
+<blockquote class="bg-[#D9FBE8] text-on-surface px-space-xs py-0.5 rounded font-mono text-label-sm inline-block">
+                    “The distributed consensus protocol guarantees strict serializability across partition-tolerant replica nodes under asynchronous networking conditions”
+                  </blockquote>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right font-mono font-bold text-on-surface">14 words</td>
+<td class="py-space-sm px-space-md font-mono text-label-sm text-secondary">Char 142–256 • Line 3</td>
+<td class="py-space-sm px-space-md font-mono text-label-sm text-secondary">Char 78–192 • Line 2</td>
+<td class="py-space-sm px-space-md text-center">
+<button class="inline-flex items-center gap-1 px-space-xs py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold transition-colors" onclick="scrollToMatch('match-a-1', 'match-b-1')">
+<span class="material-symbols-outlined text-[16px]">visibility</span> View
+                </button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors bg-surface-container-lowest">
+<td class="py-space-sm px-space-md text-center font-mono font-semibold text-secondary">02</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-start gap-space-xs">
+<span class="w-2 h-2 mt-1.5 rounded-full bg-primary-container flex-shrink-0"></span>
+<blockquote class="bg-[#D9FBE8] text-on-surface px-space-xs py-0.5 rounded font-mono text-label-sm inline-block">
+                    “By decoupling state machine replication from deterministic log compaction routines”
+                  </blockquote>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right font-mono font-bold text-on-surface">9 words</td>
+<td class="py-space-sm px-space-md font-mono text-label-sm text-secondary">Char 360–438 • Line 6</td>
+<td class="py-space-sm px-space-md font-mono text-label-sm text-secondary">Char 264–342 • Line 5</td>
+<td class="py-space-sm px-space-md text-center">
+<button class="inline-flex items-center gap-1 px-space-xs py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold transition-colors" onclick="scrollToMatch('match-a-2', 'match-b-2')">
+<span class="material-symbols-outlined text-[16px]">visibility</span> View
+                </button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-space-sm px-space-md text-center font-mono font-semibold text-secondary">03</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-start gap-space-xs">
+<span class="w-2 h-2 mt-1.5 rounded-full bg-primary-container flex-shrink-0"></span>
+<blockquote class="bg-[#D9FBE8] text-on-surface px-space-xs py-0.5 rounded font-mono text-label-sm inline-block">
+                    “hash buckets prevent hash table collision cascades”
+                  </blockquote>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right font-mono font-bold text-on-surface">6 words</td>
+<td class="py-space-sm px-space-md font-mono text-label-sm text-secondary">Char 615–668 • Line 9</td>
+<td class="py-space-sm px-space-md font-mono text-label-sm text-secondary">Char 502–555 • Line 8</td>
+<td class="py-space-sm px-space-md text-center">
+<button class="inline-flex items-center gap-1 px-space-xs py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold transition-colors" onclick="scrollToMatch('match-a-3', 'match-b-3')">
+<span class="material-symbols-outlined text-[16px]">visibility</span> View
+                </button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors bg-surface-container-lowest">
+<td class="py-space-sm px-space-md text-center font-mono font-semibold text-secondary">04</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-start gap-space-xs">
+<span class="w-2 h-2 mt-1.5 rounded-full bg-primary-container flex-shrink-0"></span>
+<blockquote class="bg-[#D9FBE8] text-on-surface px-space-xs py-0.5 rounded font-mono text-label-sm inline-block">
+                    “consistent hashing ring topologies”
+                  </blockquote>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right font-mono font-bold text-on-surface">4 words</td>
+<td class="py-space-sm px-space-md font-mono text-label-sm text-secondary">Char 792–828 • Line 12</td>
+<td class="py-space-sm px-space-md font-mono text-label-sm text-secondary">Char 684–720 • Line 11</td>
+<td class="py-space-sm px-space-md text-center">
+<button class="inline-flex items-center gap-1 px-space-xs py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold transition-colors" onclick="scrollToMatch('match-a-4', 'match-b-4')">
+<span class="material-symbols-outlined text-[16px]">visibility</span> View
+                </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- 5. Technical Analysis & Algorithm Breakdown -->
+<details class="bg-surface-container-lowest rounded-lg shadow-sm group border-none">
+<summary class="p-space-md flex items-center justify-between cursor-pointer list-none select-none font-headline-md text-headline-md text-on-surface font-semibold">
+<span class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[22px]">terminal</span>
+<span class="">Algorithm &amp; Implementation Details</span>
+</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform text-secondary text-[22px]">keyboard_arrow_down</span>
+</summary>
+<div class="px-space-md pb-space-lg pt-space-xs space-y-space-md">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Tokenizer & Overlap Specs -->
+<div class="p-space-sm rounded bg-surface-container-low space-y-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">1. Token overlap Model</span>
+<p class="font-body-sm text-body-sm text-on-surface">
+              Sørensen–Dice token coefficient with stopword stripping and case folding normalization.
+            </p>
+<div class="font-mono text-label-sm bg-surface-container-lowest p-space-xs rounded text-primary font-semibold">
+              S = (2 × 114 / (248 + 286)) × 100 = 42.69%
+            </div>
+</div>
+<!-- Rabin-Karp Specs -->
+<div class="p-space-sm rounded bg-surface-container-low space-y-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">2. Rabin-Karp Parameters</span>
+<div class="font-mono text-label-sm space-y-1 text-on-surface">
+<div class="">Hash Base (b): <span class="text-primary font-semibold">256</span></div>
+<div class="">Prime Modulus (q): <span class="text-primary font-semibold">1,000,000,007</span></div>
+<div class="">Window Size (k): <span class="text-primary font-semibold">4 tokens</span></div>
+</div>
+</div>
+<!-- Complexity & Benchmarks -->
+<div class="p-space-sm rounded bg-surface-container-low space-y-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">3. Computational Bounds</span>
+<div class="font-mono text-label-sm space-y-1 text-on-surface">
+<div class="">Time Complexity: <span class="text-primary font-semibold">O(n + m) avg</span></div>
+<div class="">Space Complexity: <span class="text-primary font-semibold">O(k) hash table</span></div>
+<div class="">Hash Collisions: <span class="text-primary font-semibold">0 observed</span></div>
+</div>
+</div>
+</div>
+<!-- Raw Flask Payload Viewer -->
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Flask Backend JSON Telemetry Payload</span>
+<span class="font-mono text-label-sm text-secondary">Content-Type: application/json</span>
+</div>
+<pre class="bg-inverse-surface text-inverse-on-surface p-space-sm rounded font-mono text-label-sm overflow-x-auto leading-tight">{
+  "status": "success",
+  "execution_time_ms": 18.4,
+  "tokenizer": "whitespace_and_punctuation_regex",
+  "total_tokens_doc_a": 248,
+  "total_tokens_doc_b": 286,
+  "shared_tokens_count": 114,
+  "similarity_score_pct": 42.8,
+  "rabin_karp_window_size": 4,
+  "exact_matches_count": 4,
+  "environment": "Flask/WSGI (Localhost Python 3.11 Runtime)"
+}</pre>
+</div>
+</div>
+</details>
+<!-- 6. Academic Disclaimer Banner -->
+<aside class="p-space-md rounded-lg bg-surface-container flex items-start gap-space-md">
+<span class="material-symbols-outlined text-secondary text-[24px] flex-shrink-0 mt-0.5">info</span>
+<div class="space-y-0.5">
+<h3 class="font-headline-sm text-body-sm text-on-surface font-bold">Academic Scope &amp; Interpretation Notice</h3>
+<p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+          Textual similarity metrics quantify literal and tokenized overlapping substrings. High overlap does not inherently denote plagiarism, deliberate attribution evasion, or intellectual misconduct. Evaluators must verify citation structures, contextual quotation marks, mathematical idioms, and disciplinary domain terms before rendering academic judgment.
+        </p>
+</div>
+</aside>
+</div>
+</div>
+<script>
+  // Formula Toggle
+  const toggleBtn = document.getElementById('toggle-formula');
+  const formulaBreakdown = document.getElementById('formula-breakdown');
+  const formulaIcon = document.getElementById('formula-icon');
+
+  if (toggleBtn && formulaBreakdown) {
+    toggleBtn.addEventListener('click', () => {
+      const isHidden = formulaBreakdown.classList.contains('hidden');
+      formulaBreakdown.classList.toggle('hidden');
+      if (formulaIcon) {
+        formulaIcon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+      }
+    });
+  }
+
+  // Synchronized Scrolling Logic
+  const panelA = document.getElementById('doc-panel-a');
+  const panelB = document.getElementById('doc-panel-b');
+  const syncToggle = document.getElementById('sync-scroll-toggle');
+  let isSyncingA = false;
+  let isSyncingB = false;
+
+  if (panelA && panelB && syncToggle) {
+    panelA.addEventListener('scroll', () => {
+      if (!syncToggle.checked || isSyncingA) return;
+      isSyncingB = true;
+      const scrollPct = panelA.scrollTop / (panelA.scrollHeight - panelA.clientHeight);
+      panelB.scrollTop = scrollPct * (panelB.scrollHeight - panelB.clientHeight);
+      setTimeout(() => { isSyncingB = false; }, 40);
+    });
+
+    panelB.addEventListener('scroll', () => {
+      if (!syncToggle.checked || isSyncingB) return;
+      isSyncingA = true;
+      const scrollPct = panelB.scrollTop / (panelB.scrollHeight - panelB.clientHeight);
+      panelA.scrollTop = scrollPct * (panelA.scrollHeight - panelA.clientHeight);
+      setTimeout(() => { isSyncingA = false; }, 40);
+    });
+  }
+
+  // Smooth Scroll to Matching Element in Both Reading Panes
+  window.scrollToMatch = function(idA, idB) {
+    const elA = document.getElementById(idA);
+    const elB = document.getElementById(idB);
+
+    if (elA) {
+      elA.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      elA.classList.add('ring-2', 'ring-primary');
+      setTimeout(() => elA.classList.remove('ring-2', 'ring-primary'), 2000);
+    }
+
+    if (elB) {
+      elB.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      elB.classList.add('ring-2', 'ring-primary');
+      setTimeout(() => elB.classList.remove('ring-2', 'ring-primary'), 2000);
+    }
+  };
+
+  // Download Report Trigger
+  const downloadBtn = document.getElementById('btn-download-report');
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', () => {
+      const reportContent = `=====================================================
+TEXTTRACE COMPREHENSIVE SIMILARITY AUDIT REPORT
+Rayat Bahra University - Dept of Computer Science
+Generated: ${new Date().toISOString()}
+=====================================================
+
+1. SUMMARY METRICS
+-----------------------------------------------------
+Similarity Index:        42.8% (Dice-Sorensen Token Metric)
+Document A Word Count:   248 words (214 normalized tokens)
+Document B Word Count:   286 words (251 normalized tokens)
+Shared Occurrences:      114 token matches
+Distinct Shared Roots:   46 unique terms
+Execution Runtime:       18.4 ms
+
+2. DETECTED RABIN-KARP PASSAGES (Window k >= 4)
+-----------------------------------------------------
+[Match 1 - 14 words]
+"The distributed consensus protocol guarantees strict serializability across partition-tolerant replica nodes under asynchronous networking conditions"
+- Doc A: Char 142-256 (Line 3)
+- Doc B: Char 78-192 (Line 2)
+
+[Match 2 - 9 words]
+"By decoupling state machine replication from deterministic log compaction routines"
+- Doc A: Char 360-438 (Line 6)
+- Doc B: Char 264-342 (Line 5)
+
+[Match 3 - 6 words]
+"hash buckets prevent hash table collision cascades"
+- Doc A: Char 615-668 (Line 9)
+- Doc B: Char 502-555 (Line 8)
+
+[Match 4 - 4 words]
+"consistent hashing ring topologies"
+- Doc A: Char 792-828 (Line 12)
+- Doc B: Char 684-720 (Line 11)
+
+3. ALGORITHMIC SPECIFICATION
+-----------------------------------------------------
+Formula: Similarity = (2 * C / (A + B)) * 100
+Values:  (2 * 114 / (248 + 286)) * 100 = 42.69%
+Rolling Hash: Base 256, Prime 1,000,000,007
+
+=====================================================
+DISCLAIMER: Overlapping text indicates identical phrasing;
+it does not conclusively determine unauthorized attribution.
+=====================================================`;
+
+      const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const tempLink = document.createElement('a');
+      tempLink.href = url;
+      tempLink.download = 'TextTrace-Similarity-Report.txt';
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      document.body.removeChild(tempLink);
+      URL.revokeObjectURL(url);
+    });
+  }
+</script></main><footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 mt-auto"><div class="max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-xl"><div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-space-lg"><div class="md:col-span-2 space-y-space-sm"><div class="flex items-center gap-space-xs"><img alt="TextTrace Logo" class="h-6 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeO_h5ZBZqC5CoCso_x6wtgZ-20wao31kKxkYPMPo-bBFEiKy01LJboiK99ps3YiJM1MuHp8I-RHXvGXyJNm9KGe-pG1vedq7CaSdfHNM5n4YD0fiIe2Cj_bSxBkIPnhr1M6565_Og5LlEAQ20y5kXWH7Wr-E2Gr5AuP8HKaCXYWmlZC1ubdZirWd64yujt8SHV4kWzxVopTkZtqyjIas0S3kVIct_RWvU3WD73mdRgOUJjhmqiSGT"><span class="font-headline-sm text-headline-sm text-on-surface">TextTrace</span></div><p class="font-body-sm text-body-sm text-on-surface-variant max-w-md">Computational linguistic analysis workbench implementing multi-tiered string metrics, rolling hash algorithms, and token overlapping models for robust document similarity detection.</p><div class="pt-space-xs"><span class="font-label-sm text-label-sm text-secondary font-semibold">Rayat Bahra University · Department of Computer Science &amp; Engineering</span></div></div><div><h4 class="font-headline-sm text-body-sm text-on-surface uppercase tracking-wider mb-space-sm">Algorithmic Models</h4><ul class="space-y-space-xs font-label-md text-label-md text-on-surface-variant"><li class="">Rabin-Karp Rolling Hash</li><li class="">Token-Level N-Gram Overlap</li><li class="">Jaccard &amp; Cosine Metric</li><li class="">Levenshtein Distance Engine</li></ul></div><div><h4 class="font-headline-sm text-body-sm text-on-surface uppercase tracking-wider mb-space-sm">Academic Scope</h4><ul class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant"><li class="">Author: Harsh Garg (B.Tech CSE)</li><li class="">Author: Babishya (B.Tech CSE)</li><li class="">Instructor &amp; Evaluator Console</li><li class="">Privacy: Ephemeral In-Memory Diff</li></ul></div></div><div class="pt-space-md border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-space-sm"><p class="font-label-sm text-label-sm text-secondary">© 2025 TextTrace · Rayat Bahra University B.Tech Capstone Project. All rights reserved.</p><p class="font-label-sm text-label-sm text-secondary">Zero Data Retention Guarantee · Localhost Flask Environment</p></div></div></footer>
+
+</body></html>
