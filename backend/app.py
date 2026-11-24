@@ -5,7 +5,7 @@ Pure Flask routing and API layer. Algorithmic core is in texttrace/.
 
 import os
 import sys
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_from_directory
 
 # Ensure backend directory and root are in sys.path
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -31,6 +31,11 @@ app = Flask(
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(app.static_folder, "favicon.svg", mimetype="image/svg+xml")
 
 
 @app.route("/api/extract", methods=["POST"])
